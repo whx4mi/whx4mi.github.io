@@ -149,6 +149,16 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
 .wt{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
 .wf{height:100%;background:#ff6b35;border-radius:2px}
 
+/* AI BLOCK */
+.aiblock{background:var(--surface);border:1px solid rgba(168,85,247,.2);border-radius:10px;padding:22px 24px}
+.aih{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ait{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;color:var(--purple)}
+.ais{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px}
+.aid{font-size:12px;color:var(--m2);line-height:1.75;margin-bottom:16px}
+.aid strong{color:var(--text);font-weight:500}
+.aipills{display:flex;flex-wrap:wrap;gap:7px}
+.aip{font-family:'JetBrains Mono',monospace;font-size:10px;background:rgba(168,85,247,.07);border:1px solid rgba(168,85,247,.18);color:var(--purple);padding:4px 11px;border-radius:4px}
+
 /* EXP */
 .expitem{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin-bottom:8px;position:relative;padding-left:24px}
 .expitem::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:4px 0 0 4px}
@@ -210,6 +220,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
   <span class="logo">whx4mi<span> // red team</span></span>
   <div class="nav-a">
     <a href="#skills">skills</a>
+    <a href="#ai">IA</a>
     <a href="#projects">projetos</a>
     <a href="#exp">experiência</a>
     <a href="#certs">certs</a>
@@ -411,9 +422,39 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
   </div>
 </div>
 
+<!-- AI -->
+<div id="ai" class="sec" style="margin-top:40px">
+  <span class="snum">02</span>
+  <span class="slbl">// IA no fluxo de trabalho</span>
+  <div class="sline"></div>
+</div>
+
+<div class="aiblock">
+  <div class="aih">
+    <span style="font-size:22px">🧠</span>
+    <div>
+      <div class="ait">AI-Augmented Security Workflow</div>
+      <div class="ais">// amplificação, não substituição — uso diário em pesquisa e análise</div>
+    </div>
+  </div>
+  <div class="aid">
+    Acompanho a evolução dos modelos de linguagem e os integro ativamente na rotina de segurança: pesquisa técnica acelerada, análise de outputs de ferramentas, geração de relatórios e apoio no desenvolvimento de tools. Tenho familiaridade com LLM APIs, prompt engineering e construção de agentes — incluindo um <strong>agente de pentest autônomo com MCP</strong> que executa ferramentas ofensivas via ReAct loop. IA como multiplicador de capacidade, não como atalho.
+  </div>
+  <div class="aipills">
+    <span class="aip">Claude (Anthropic)</span>
+    <span class="aip">ChatGPT / GPT-4o</span>
+    <span class="aip">Gemini</span>
+    <span class="aip">Ollama (local)</span>
+    <span class="aip">Prompt Engineering</span>
+    <span class="aip">LLM APIs</span>
+    <span class="aip">AI Agents</span>
+    <span class="aip">MCP Protocol</span>
+  </div>
+</div>
+
 <!-- PROJECTS -->
 <div id="projects" class="sec">
-  <span class="snum">02</span>
+  <span class="snum">03</span>
   <span class="slbl">// Projetos &amp; Pesquisa</span>
   <div class="sline"></div>
 </div>
@@ -486,7 +527,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
 
 <!-- EXPERIENCE -->
 <div id="exp" class="sec">
-  <span class="snum">03</span>
+  <span class="snum">04</span>
   <span class="slbl">// Experiência</span>
   <div class="sline"></div>
 </div>
@@ -521,7 +562,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
 
 <!-- CERTS -->
 <div id="certs" class="sec">
-  <span class="snum">04</span>
+  <span class="snum">05</span>
   <span class="slbl">// Certificações &amp; Formação</span>
   <div class="sline"></div>
 </div>
