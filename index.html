@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>André Luiz Scherer — Portfolio</title>
+<title>whx4mi — Portfolio</title>
 <meta name="description" content="Analista de TI em transição para Segurança da Informação. Labs, projetos Python, OSINT, Red Team research.">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -16,52 +16,64 @@
   --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
 }
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;min-height:100vh;overflow-x:hidden}
 body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.012) 2px,rgba(0,255,136,0.012) 4px);
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,136,0.01) 2px,rgba(0,255,136,0.01) 4px);
   pointer-events:none;z-index:0}
 body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;
-  background-image:linear-gradient(rgba(0,255,136,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.025) 1px,transparent 1px);
+  background-image:linear-gradient(rgba(0,255,136,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.02) 1px,transparent 1px);
   background-size:48px 48px;pointer-events:none;z-index:0}
 
-.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:40px 24px 80px}
-.mono{font-family:'JetBrains Mono',monospace}
+/* BOOT SCREEN */
+#boot{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;
+  justify-content:center;align-items:flex-start;padding:48px;font-family:'JetBrains Mono',monospace}
+#boot-lines{max-width:700px;width:100%}
+.bl{font-size:clamp(12px,1.8vw,15px);line-height:2;opacity:0;white-space:pre}
+.bl.show{opacity:1}
+.bl .g{color:var(--green)}.bl .b{color:var(--blue)}.bl .m{color:var(--muted2)}.bl .a{color:var(--amber)}.bl .r{color:var(--red)}.bl .p{color:var(--purple)}
+.cursor-boot{display:inline-block;width:9px;height:16px;background:var(--green);vertical-align:-3px;animation:blink 0.8s step-end infinite}
+#boot.fade-out{animation:fadeOut 0.6s ease forwards}
+@keyframes fadeOut{to{opacity:0;pointer-events:none}}
 
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-filter:blur(8px);
-  border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green)}
-.nav-links{display:flex;gap:20px}
-.nav-links a{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:0.5px}
+/* MAIN */
+#main{opacity:0;transition:opacity 0.6s ease}
+#main.visible{opacity:1}
+
+nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.95);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--border);padding:10px 32px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:13px;color:var(--green)}
+.nav-links{display:flex;gap:24px}
+.nav-links a{font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:0.5px;transition:color 0.15s}
 .nav-links a:hover{color:var(--green)}
 
-/* TERMINAL HERO */
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:40px 24px 80px}
+
+/* HERO */
 .terminal-bar{background:var(--surface);border:1px solid var(--border);border-radius:10px 10px 0 0;
-  padding:10px 16px;display:flex;align-items:center;gap:8px;margin-top:32px}
+  padding:10px 16px;display:flex;align-items:center;gap:8px}
 .dot{width:12px;height:12px;border-radius:50%}
 .dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
-.t-title{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;margin:0 auto}
+.t-title{color:var(--muted);font-size:12px;margin:0 auto}
 .hero-body{background:var(--surface);border:1px solid var(--border);border-top:none;
   border-radius:0 0 10px 10px;padding:28px 28px 32px;margin-bottom:32px}
-.prompt-line{display:flex;align-items:center;gap:8px;margin-bottom:6px;
-  font-family:'JetBrains Mono',monospace;font-size:13px}
-.ps{color:var(--green)}.pp{color:var(--blue)}.pc{color:var(--text)}
-.out{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted2);margin-bottom:3px;padding-left:20px}
-.hero-name{font-family:'JetBrains Mono',monospace;font-size:clamp(24px,4vw,40px);font-weight:700;
-  color:var(--green);letter-spacing:-1px;line-height:1.1;margin:20px 0 6px}
-.hero-sub{color:var(--blue);font-size:14px;font-family:'JetBrains Mono',monospace;margin-bottom:4px}
-.hero-sub2{color:var(--muted2);font-size:12px;font-family:'JetBrains Mono',monospace;
-  margin-bottom:20px;font-style:italic}
+.prompt-line{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px}
+.ps{color:var(--green)}.pp{color:var(--blue)}
+.out{font-size:12px;color:var(--muted2);margin-bottom:3px;padding-left:20px}
+.hero-name{font-size:clamp(24px,4vw,40px);font-weight:700;color:var(--green);
+  letter-spacing:-1px;line-height:1.1;margin:20px 0 6px}
+.hero-sub{color:var(--blue);font-size:14px;margin-bottom:4px}
+.hero-sub2{color:var(--muted2);font-size:12px;margin-bottom:20px;font-style:italic}
 .tag-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
-.tag{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);
-  color:var(--green);padding:3px 11px;border-radius:4px;font-size:11px;font-family:'JetBrains Mono',monospace}
-.tag.blue{background:rgba(77,166,255,0.08);border-color:rgba(77,166,255,0.25);color:var(--blue)}
-.tag.amber{background:rgba(255,179,71,0.08);border-color:rgba(255,179,71,0.25);color:var(--amber)}
-.tag.purple{background:rgba(168,85,247,0.08);border-color:rgba(168,85,247,0.25);color:var(--purple)}
-.tag.orange{background:rgba(255,107,53,0.08);border-color:rgba(255,107,53,0.25);color:var(--orange)}
+.tag{padding:3px 11px;border-radius:4px;font-size:11px}
+.tag-g{background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--green)}
+.tag-b{background:rgba(77,166,255,0.08);border:1px solid rgba(77,166,255,0.25);color:var(--blue)}
+.tag-a{background:rgba(255,179,71,0.08);border:1px solid rgba(255,179,71,0.25);color:var(--amber)}
+.tag-p{background:rgba(168,85,247,0.08);border:1px solid rgba(168,85,247,0.25);color:var(--purple)}
+.tag-o{background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.25);color:var(--orange)}
 .contact-row{display:flex;flex-wrap:wrap;gap:14px}
-.ci{display:flex;align-items:center;gap:5px;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--muted2)}
+.ci{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted2)}
 .ci em{color:var(--green);font-style:normal}
+.ci a{color:var(--muted2);text-decoration:none}
 
 /* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:40px}
@@ -70,36 +82,53 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
 .stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
 .sg::before{background:var(--green)}.sb::before{background:var(--blue)}
 .sa::before{background:var(--amber)}.sp::before{background:var(--purple)}.so::before{background:var(--orange)}
-.stat-num{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;margin-bottom:3px}
+.stat-num{font-size:22px;font-weight:700;margin-bottom:3px}
 .sg .stat-num{color:var(--green)}.sb .stat-num{color:var(--blue)}
 .sa .stat-num{color:var(--amber)}.sp .stat-num{color:var(--purple)}.so .stat-num{color:var(--orange)}
-.stat-label{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.stat-label{font-size:10px;color:var(--muted)}
 
-/* SECTION HEADER */
+/* SECTION */
 .sec{display:flex;align-items:center;gap:10px;margin-bottom:18px;margin-top:48px}
 .sec-line{flex:1;height:1px;background:var(--border)}
-.sec-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;
-  color:var(--green);text-transform:uppercase;white-space:nowrap}
-.sec-num{color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px}
+.sec-label{font-size:11px;letter-spacing:2px;color:var(--green);text-transform:uppercase;white-space:nowrap}
+.sec-num{color:var(--muted);font-size:11px}
 
 /* NOTICE */
 .notice{background:rgba(77,166,255,0.06);border:1px solid rgba(77,166,255,0.2);
   border-radius:6px;padding:10px 14px;margin-bottom:20px;
-  font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted2);
-  display:flex;align-items:flex-start;gap:8px;line-height:1.6}
+  font-size:11px;color:var(--muted2);display:flex;align-items:flex-start;gap:8px;line-height:1.6}
 .notice em{color:var(--blue);font-style:normal}
 
-/* PROJECT CARDS */
+/* LEVEL BADGE */
+.level-badge{font-size:9px;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:middle;font-weight:700;letter-spacing:0.5px}
+.lv-jr{background:rgba(77,166,255,0.15);color:var(--blue);border:1px solid rgba(77,166,255,0.3)}
+.lv-jrpl{background:rgba(255,179,71,0.15);color:var(--amber);border:1px solid rgba(255,179,71,0.3)}
+.lv-plsr{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid rgba(0,255,136,0.3)}
+.lv-ai{background:rgba(168,85,247,0.15);color:var(--purple);border:1px solid rgba(168,85,247,0.3)}
+
+/* SKILLS */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.sk-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.sk-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sk-title{font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.sk-blue .sk-title{color:var(--blue)}.sk-red .sk-title{color:var(--red)}
+.sk-green .sk-title{color:var(--green)}.sk-purple .sk-title{color:var(--purple)}.sk-amber .sk-title{color:var(--amber)}
+.ski{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ski-name{font-size:11px;color:var(--muted2)}
+.bar-w{width:80px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.bar-f{height:100%;border-radius:2px}
+.sk-blue .bar-f{background:var(--blue)}.sk-red .bar-f{background:var(--red)}
+.sk-green .bar-f{background:var(--green)}.sk-purple .bar-f{background:var(--purple)}.sk-amber .bar-f{background:var(--amber)}
+.sk-note{font-size:9px;color:var(--muted);margin-top:6px;font-style:italic;border-top:1px solid var(--border);padding-top:6px}
+
+/* PROJECTS */
 .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
 .proj{background:var(--surface);border:1px solid var(--border);border-radius:10px;
   padding:18px;position:relative;overflow:hidden;transition:border-color 0.2s,transform 0.15s}
 .proj:hover{transform:translateY(-2px)}
-.proj.cg:hover{border-color:rgba(0,255,136,0.4)}
-.proj.cb:hover{border-color:rgba(77,166,255,0.4)}
-.proj.ca:hover{border-color:rgba(255,179,71,0.4)}
-.proj.cp:hover{border-color:rgba(168,85,247,0.4)}
-.proj.cc:hover{border-color:rgba(0,212,255,0.4)}
-.proj.cr:hover{border-color:rgba(255,71,87,0.4)}
+.proj.cg:hover{border-color:rgba(0,255,136,0.4)}.proj.cb:hover{border-color:rgba(77,166,255,0.4)}
+.proj.ca:hover{border-color:rgba(255,179,71,0.4)}.proj.cp:hover{border-color:rgba(168,85,247,0.4)}
+.proj.cc:hover{border-color:rgba(0,212,255,0.4)}.proj.cr:hover{border-color:rgba(255,71,87,0.4)}
 .proj-accent{position:absolute;top:0;left:0;right:0;height:2px}
 .cg .proj-accent{background:var(--green)}.cb .proj-accent{background:var(--blue)}
 .ca .proj-accent{background:var(--amber)}.cp .proj-accent{background:var(--purple)}
@@ -107,70 +136,48 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
 .proj-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .proj-icon{font-size:20px}
 .badges{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
-.badge{font-size:9px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:3px;letter-spacing:0.3px;white-space:nowrap}
-.b-private{background:rgba(77,166,255,0.1);color:var(--blue);border:1px solid rgba(77,166,255,0.2)}
-.b-lab{background:rgba(255,179,71,0.1);color:var(--amber);border:1px solid rgba(255,179,71,0.2)}
+.badge{font-size:9px;padding:2px 7px;border-radius:3px;letter-spacing:0.3px;white-space:nowrap}
 .b-done{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.2)}
 .b-wip{background:rgba(255,107,53,0.1);color:var(--orange);border:1px solid rgba(255,107,53,0.2)}
+.b-private{background:rgba(77,166,255,0.1);color:var(--blue);border:1px solid rgba(77,166,255,0.2)}
+.b-lab{background:rgba(255,179,71,0.1);color:var(--amber);border:1px solid rgba(255,179,71,0.2)}
 .b-ai{background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.2)}
-.proj-name{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;margin-bottom:3px}
-.cg .proj-name{color:var(--green)}.cb .proj-name{color:var(--blue)}
-.ca .proj-name{color:var(--amber)}.cp .proj-name{color:var(--purple)}
-.cc .proj-name{color:var(--cyan)}.cr .proj-name{color:var(--red)}
-.proj-role{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:10px}
+.proj-name{font-size:14px;font-weight:700;margin-bottom:3px}
+.cg .proj-name{color:var(--green)}.cb .proj-name{color:var(--blue)}.ca .proj-name{color:var(--amber)}
+.cp .proj-name{color:var(--purple)}.cc .proj-name{color:var(--cyan)}.cr .proj-name{color:var(--red)}
+.proj-role{font-size:10px;color:var(--muted);margin-bottom:10px}
 .proj-desc{font-size:12px;color:var(--muted2);line-height:1.65;margin-bottom:12px}
 .proj-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}
-.ptag{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 6px;border-radius:3px;
-  background:var(--surface2);border:1px solid var(--border2);color:var(--muted2)}
-.proj-footer{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--muted);
-  border-top:1px solid var(--border);padding-top:8px;display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.ptag{font-size:10px;padding:2px 6px;border-radius:3px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted2)}
+.proj-footer{font-size:10px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;display:flex;flex-wrap:wrap;align-items:center;gap:5px}
 .mb{padding:1px 5px;border-radius:2px;font-size:9px}
-.cg .mb{background:rgba(0,255,136,0.1);color:var(--green)}
-.cb .mb{background:rgba(77,166,255,0.1);color:var(--blue)}
-.ca .mb{background:rgba(255,179,71,0.1);color:var(--amber)}
-.cp .mb{background:rgba(168,85,247,0.1);color:var(--purple)}
-.cc .mb{background:rgba(0,212,255,0.1);color:var(--cyan)}
-.cr .mb{background:rgba(255,71,87,0.1);color:var(--red)}
-
-/* WIP BAR */
+.cg .mb{background:rgba(0,255,136,0.1);color:var(--green)}.cb .mb{background:rgba(77,166,255,0.1);color:var(--blue)}
+.ca .mb{background:rgba(255,179,71,0.1);color:var(--amber)}.cp .mb{background:rgba(168,85,247,0.1);color:var(--purple)}
+.cc .mb{background:rgba(0,212,255,0.1);color:var(--cyan)}.cr .mb{background:rgba(255,71,87,0.1);color:var(--red)}
 .wip-bar{margin-top:10px;border-top:1px solid var(--border);padding-top:10px}
-.wip-label{font-size:9px;font-family:'JetBrains Mono',monospace;color:var(--orange);margin-bottom:5px}
+.wip-label{font-size:9px;color:var(--orange);margin-bottom:5px}
 .wip-track{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
-.wip-fill{height:100%;background:var(--orange);border-radius:2px;transition:width 0.3s}
+.wip-fill{height:100%;background:var(--orange);border-radius:2px}
 
 /* AI BLOCK */
 .ai-block{background:var(--surface);border:1px solid rgba(168,85,247,0.3);border-radius:10px;padding:20px}
 .ai-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.ai-title{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--purple)}
-.ai-sub{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.ai-title{font-size:13px;font-weight:700;color:var(--purple)}
+.ai-sub{font-size:10px;color:var(--muted)}
 .ai-desc{font-size:12px;color:var(--muted2);line-height:1.7;margin-bottom:14px}
 .ai-pills{display:flex;flex-wrap:wrap;gap:6px}
 .ai-pill{background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.2);color:var(--purple);
-  padding:3px 10px;border-radius:4px;font-size:10px;font-family:'JetBrains Mono',monospace}
-
-/* SKILLS */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
-.sb{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
-.sb-title{font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.sb-blue .sb-title{color:var(--blue)}.sb-red .sb-title{color:var(--red)}
-.sb-green .sb-title{color:var(--green)}.sb-purple .sb-title{color:var(--purple)}
-.ski{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
-.ski-name{font-size:11px;color:var(--muted2);font-family:'JetBrains Mono',monospace}
-.bar-w{width:72px;height:3px;background:var(--border);border-radius:2px;overflow:hidden}
-.bar-f{height:100%;border-radius:2px}
-.sb-blue .bar-f{background:var(--blue)}.sb-red .bar-f{background:var(--red)}
-.sb-green .bar-f{background:var(--green)}.sb-purple .bar-f{background:var(--purple)}
-.ski-note{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:4px;font-style:italic}
+  padding:3px 10px;border-radius:4px;font-size:10px}
 
 /* EXP */
 .exp-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;
   padding:16px 18px;margin-bottom:8px;position:relative;padding-left:24px}
 .exp-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:4px 0 0 4px}
 .ei-c::before{background:var(--blue)}.ei-p::before{background:var(--border2)}
-.exp-role{font-size:13px;font-weight:500;font-family:'JetBrains Mono',monospace;color:var(--text);margin-bottom:2px}
-.exp-co{font-size:11px;font-family:'JetBrains Mono',monospace;margin-bottom:2px}
+.exp-role{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+.exp-co{font-size:11px;margin-bottom:2px}
 .ei-c .exp-co{color:var(--blue)}.ei-p .exp-co{color:var(--muted)}
-.exp-period{font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:8px}
+.exp-period{font-size:10px;color:var(--muted);margin-bottom:8px}
 .exp-bul{list-style:none;padding:0}
 .exp-bul li{font-size:11px;color:var(--muted2);padding:2px 0 2px 12px;position:relative;line-height:1.5}
 .exp-bul li::before{content:'▸';position:absolute;left:0;color:var(--muted);font-size:9px;top:4px}
@@ -180,35 +187,61 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
 .cert{background:var(--surface);border:1px solid var(--border);border-radius:8px;
   padding:12px 14px;display:flex;align-items:center;gap:10px}
 .cert-icon{font-size:20px;flex-shrink:0}
-.cert-name{font-size:11px;font-weight:500;font-family:'JetBrains Mono',monospace;color:var(--text);line-height:1.3}
-.cert-issuer{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px}
+.cert-name{font-size:11px;font-weight:500;color:var(--text);line-height:1.3}
+.cert-issuer{font-size:9px;color:var(--muted);margin-top:2px}
 
 /* FOOTER */
 .footer{background:var(--surface);border:1px solid var(--border);border-radius:8px;
   padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:8px;margin-top:48px}
-.footer-cmd{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.footer-cmd{font-size:11px;color:var(--muted)}
 .footer-cmd em{color:var(--green);font-style:normal}
 .cursor{display:inline-block;width:7px;height:13px;background:var(--green);
   margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 .footer-links{display:flex;gap:14px}
-.flink{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--blue);text-decoration:none}
+.flink{font-size:11px;color:var(--blue);text-decoration:none}
 .flink:hover{color:var(--cyan)}
 
-/* RESPONSIVE */
 @media(max-width:600px){
   .wrap{padding:20px 14px 60px}
   nav{padding:8px 14px}
   .nav-links{gap:12px}
   .hero-body{padding:18px 16px 22px}
+  #boot{padding:28px 20px}
 }
 </style>
 </head>
 <body>
 
+<!-- BOOT SCREEN -->
+<div id="boot">
+  <div id="boot-lines">
+    <div class="bl" id="l0"><span class="g">whx4mi</span><span class="m">@portfolio</span><span class="g">:~$</span> <span>cat whoami.txt</span></div>
+    <div class="bl" id="l1"><span class="m">// carregando perfil...</span></div>
+    <div class="bl" id="l2"></div>
+    <div class="bl" id="l3"><span class="g">NAME</span>        <span>André Luiz Scherer</span></div>
+    <div class="bl" id="l4"><span class="g">ALIAS</span>       <span class="b">whx4mi</span></div>
+    <div class="bl" id="l5"><span class="g">ROLE</span>        <span>Suporte de TI → Segurança da Informação</span></div>
+    <div class="bl" id="l6"><span class="g">STATUS</span>      <span class="a">em transição ativa</span></div>
+    <div class="bl" id="l7"><span class="g">LOCATION</span>    <span>Cascavel, PR · Brasil</span></div>
+    <div class="bl" id="l8"></div>
+    <div class="bl" id="l9"><span class="g">whx4mi</span><span class="m">@portfolio</span><span class="g">:~$</span> <span>ls -la skills/</span></div>
+    <div class="bl" id="l10"><span class="g">drwx</span>  <span class="b">infra-suporte/</span>       <span class="m"># nível PL/SR</span></div>
+    <div class="bl" id="l11"><span class="g">drwx</span>  <span class="r">red-team/</span>            <span class="m"># nível JR/PL (labs)</span></div>
+    <div class="bl" id="l12"><span class="g">drwx</span>  <span class="b">blue-team/</span>           <span class="m"># nível JR (aprendendo)</span></div>
+    <div class="bl" id="l13"><span class="g">drwx</span>  <span class="p">ai-workflows/</span>        <span class="m"># uso diário com LLMs</span></div>
+    <div class="bl" id="l14"><span class="g">drwx</span>  <span class="a">dev-python/</span>          <span class="m"># lógica + IA como copiloto</span></div>
+    <div class="bl" id="l15"></div>
+    <div class="bl" id="l16"><span class="g">whx4mi</span><span class="m">@portfolio</span><span class="g">:~$</span> <span>./load-portfolio.sh</span></div>
+    <div class="bl" id="l17"><span class="m">// inicializando interface... </span><span class="cursor-boot"></span></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div id="main">
 <nav>
-  <span class="nav-logo">~/andre.scherer</span>
+  <span class="nav-logo">~/whx4mi</span>
   <div class="nav-links">
     <a href="#projetos">projetos</a>
     <a href="#skills">skills</a>
@@ -223,28 +256,27 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
   <!-- HERO -->
   <div class="terminal-bar">
     <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-    <span class="t-title mono">~/portfolio — andre@scherer:~$ cat whoami.txt</span>
+    <span class="t-title">whx4mi@portfolio:~$ cat whoami.txt</span>
   </div>
   <div class="hero-body">
-    <div class="prompt-line"><span class="ps mono">❯</span><span class="pp mono">~</span><span class="pc mono">cat whoami.txt</span></div>
-    <div class="out">// carregando perfil...</div>
+    <div class="prompt-line"><span class="ps">❯</span><span class="pp">~</span><span> cat whoami.txt</span></div>
+    <div class="out">// perfil carregado com sucesso</div>
     <div class="hero-name">André Luiz Scherer</div>
-    <div class="hero-sub">Analista de Suporte de TI  →  Segurança da Informação</div>
-    <div class="hero-sub2">// em transição ativa · labs & projetos pessoais · Cascavel, PR · Brasil</div>
+    <div class="hero-sub">Suporte & Infra PL/SR → Segurança da Informação</div>
+    <div class="hero-sub2">// red team JR/PL (labs) · blue team JR · dev com IA · Cascavel, PR</div>
     <div class="tag-row">
-      <span class="tag blue">🔵 Blue Team (aprendendo)</span>
-      <span class="tag">🔴 Red Team (labs)</span>
-      <span class="tag amber">⚡ Python Dev</span>
-      <span class="tag purple">🤖 AI-Powered Workflows</span>
-      <span class="tag">🛡️ Infra &amp; Suporte</span>
-      <span class="tag orange">📡 OSINT</span>
+      <span class="tag tag-g">🛡️ Infra/Suporte PL/SR</span>
+      <span class="tag tag-a">🔴 Red Team JR/PL</span>
+      <span class="tag tag-b">🔵 Blue Team JR</span>
+      <span class="tag tag-p">🤖 AI Workflows</span>
+      <span class="tag tag-o">📡 OSINT</span>
     </div>
     <div class="contact-row">
       <div class="ci"><em>📍</em> Cascavel, PR</div>
       <div class="ci"><em>📧</em> andrescherer0@gmail.com</div>
       <div class="ci"><em>📱</em> (45) 99835-5905</div>
-      <div class="ci"><em>🔗</em> <a href="https://linkedin.com/in/scherer0" style="color:var(--muted2);text-decoration:none">linkedin.com/in/scherer0</a></div>
-      <div class="ci"><em>🏅</em> <a href="https://credly.com/users/andre.scherer" style="color:var(--muted2);text-decoration:none">credly.com/users/andre.scherer</a></div>
+      <div class="ci"><em>🔗</em> <a href="https://linkedin.com/in/scherer0" target="_blank">linkedin.com/in/scherer0</a></div>
+      <div class="ci"><em>🏅</em> <a href="https://credly.com/users/andre.scherer" target="_blank">credly.com/users/andre.scherer</a></div>
     </div>
   </div>
 
@@ -254,203 +286,75 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
     <div class="stat sb"><div class="stat-num">3+</div><div class="stat-label">Anos em TI/Suporte</div></div>
     <div class="stat sa"><div class="stat-num">6+</div><div class="stat-label">Ferramentas criadas</div></div>
     <div class="stat sp"><div class="stat-num">8+</div><div class="stat-label">Certificações</div></div>
-    <div class="stat so"><div class="stat-num">MITRE</div><div class="stat-label">ATT&amp;CK mapeado</div></div>
+    <div class="stat so"><div class="stat-num">MITRE</div><div class="stat-label">ATT&CK mapeado</div></div>
   </div>
 
-  <!-- PROJETOS -->
-  <div id="projetos" class="sec">
-    <span class="sec-num mono">01</span>
-    <span class="sec-label">// Projetos de pesquisa &amp; labs</span>
+  <!-- SKILLS -->
+  <div id="skills" class="sec">
+    <span class="sec-num">03</span>
+    <span class="sec-label">// Stack técnico</span>
     <div class="sec-line"></div>
   </div>
 
-  <div class="notice">
-    <em>ℹ</em>
-    Todos os projetos foram desenvolvidos em ambiente de laboratório controlado, fins educacionais e de pesquisa. Repositórios privados — disponíveis para revisão técnica mediante solicitação.
+  <div class="skills-grid">
+    <div class="sk-block sk-green">
+      <div class="sk-header">
+        <span class="sk-title">Suporte &amp; Infra</span>
+        <span class="level-badge lv-plsr">PL / SR</span>
+      </div>
+      <div class="ski"><span class="ski-name">Acronis Cyber Protect</span><div class="bar-w"><div class="bar-f" style="width:92%"></div></div></div>
+      <div class="ski"><span class="ski-name">Windows Server / AD</span><div class="bar-w"><div class="bar-f" style="width:82%"></div></div></div>
+      <div class="ski"><span class="ski-name">Linux (Arch / Kali)</span><div class="bar-w"><div class="bar-f" style="width:84%"></div></div></div>
+      <div class="ski"><span class="ski-name">Redes / TCP-IP</span><div class="bar-w"><div class="bar-f" style="width:80%"></div></div></div>
+      <div class="ski"><span class="ski-name">Wireshark / Tcpdump</span><div class="bar-w"><div class="bar-f" style="width:72%"></div></div></div>
+      <div class="sk-note">// experiência profissional consolidada</div>
+    </div>
+    <div class="sk-block sk-red">
+      <div class="sk-header">
+        <span class="sk-title">Red Team</span>
+        <span class="level-badge lv-jrpl">JR / PL</span>
+      </div>
+      <div class="ski"><span class="ski-name">Pentest Web (OWASP)</span><div class="bar-w"><div class="bar-f" style="width:78%"></div></div></div>
+      <div class="ski"><span class="ski-name">MITRE ATT&CK</span><div class="bar-w"><div class="bar-f" style="width:80%"></div></div></div>
+      <div class="ski"><span class="ski-name">C2 / Malware Research</span><div class="bar-w"><div class="bar-f" style="width:72%"></div></div></div>
+      <div class="ski"><span class="ski-name">Privesc Linux/Win</span><div class="bar-w"><div class="bar-f" style="width:70%"></div></div></div>
+      <div class="ski"><span class="ski-name">BurpSuite / Nmap</span><div class="bar-w"><div class="bar-f" style="width:75%"></div></div></div>
+      <div class="sk-note">// ambiente de laboratório controlado</div>
+    </div>
+    <div class="sk-block sk-blue">
+      <div class="sk-header">
+        <span class="sk-title">Blue Team</span>
+        <span class="level-badge lv-jr">JR</span>
+      </div>
+      <div class="ski"><span class="ski-name">EDR/XDR (contato)</span><div class="bar-w"><div class="bar-f" style="width:60%"></div></div></div>
+      <div class="ski"><span class="ski-name">Detection Eng / Sigma</span><div class="bar-w"><div class="bar-f" style="width:58%"></div></div></div>
+      <div class="ski"><span class="ski-name">Wazuh / Log Analysis</span><div class="bar-w"><div class="bar-f" style="width:62%"></div></div></div>
+      <div class="ski"><span class="ski-name">Incident Response</span><div class="bar-w"><div class="bar-f" style="width:52%"></div></div></div>
+      <div class="sk-note">// aprendizado ativo via labs e projetos</div>
+    </div>
+    <div class="sk-block sk-amber">
+      <div class="sk-header">
+        <span class="sk-title">Dev + IA</span>
+        <span class="level-badge lv-ai">IA-assisted</span>
+      </div>
+      <div class="ski"><span class="ski-name">Python (lógica)</span><div class="bar-w"><div class="bar-f" style="width:70%"></div></div></div>
+      <div class="ski"><span class="ski-name">Flask / SocketIO</span><div class="bar-w"><div class="bar-f" style="width:60%"></div></div></div>
+      <div class="ski"><span class="ski-name">LLM APIs / Agents</span><div class="bar-w"><div class="bar-f" style="width:78%"></div></div></div>
+      <div class="ski"><span class="ski-name">Prompt Engineering</span><div class="bar-w"><div class="bar-f" style="width:80%"></div></div></div>
+      <div class="sk-note">// entrega amplificada com IA como copiloto</div>
+    </div>
   </div>
 
-  <div class="projects-grid">
-
-    <!-- GeminiRAT -->
-    <div class="proj cr">
-      <div class="proj-accent"></div>
-      <div class="proj-header">
-        <div class="proj-icon">🦠</div>
-        <div class="badges">
-          <span class="badge b-done">CONCLUÍDO</span>
-          <span class="badge b-private">PRIVADO</span>
-          <span class="badge b-lab">LAB</span>
-        </div>
-      </div>
-      <div class="proj-name">GeminiRAT</div>
-      <div class="proj-role">Framework C2 · Malware Research · Python</div>
-      <div class="proj-desc">Framework de Comando &amp; Controle para emulação de adversários em lab isolado. Arquitetura cliente-servidor com coleta, persistência e exfiltração. Base para derivar regras Sigma/Wazuh e estudar detection engineering.</div>
-      <div class="proj-tags">
-        <span class="ptag">Python</span><span class="ptag">Sockets</span><span class="ptag">C2</span>
-        <span class="ptag">Sigma</span><span class="ptag">Wazuh</span>
-      </div>
-      <div class="proj-footer">
-        <span>MITRE:</span>
-        <span class="mb cr">TA0011 C2</span>
-        <span class="mb cr">TA0010 Exfil</span>
-        <span class="mb cr">TA0003 Persist</span>
-      </div>
-    </div>
-
-    <!-- ReconX -->
-    <div class="proj cg">
-      <div class="proj-accent"></div>
-      <div class="proj-header">
-        <div class="proj-icon">🔍</div>
-        <div class="badges">
-          <span class="badge b-wip">EM DESENVOLVIMENTO</span>
-          <span class="badge b-lab">LAB</span>
-        </div>
-      </div>
-      <div class="proj-name">ReconX v5</div>
-      <div class="proj-role">Pentest Orchestrator · Flask + SocketIO</div>
-      <div class="proj-desc">Orquestrador de toolchain ofensivo com UI em tempo real via SocketIO. Pipeline integrado com Nmap, Gobuster, Nikto, wafw00f, WhatWeb. Findings persistidos em SQLite por severidade.</div>
-      <div class="proj-tags">
-        <span class="ptag">Python</span><span class="ptag">Flask</span><span class="ptag">SocketIO</span>
-        <span class="ptag">SQLite</span><span class="ptag">Nmap</span>
-      </div>
-      <div class="proj-footer">
-        <span>MITRE:</span>
-        <span class="mb cg">TA0043 Recon</span>
-        <span class="mb cg">TA0007 Discovery</span>
-      </div>
-      <div class="wip-bar">
-        <div class="wip-label">progresso estimado: 75%</div>
-        <div class="wip-track"><div class="wip-fill" style="width:75%"></div></div>
-      </div>
-    </div>
-
-    <!-- NEXUS -->
-    <div class="proj cb">
-      <div class="proj-accent"></div>
-      <div class="proj-header">
-        <div class="proj-icon">🌐</div>
-        <div class="badges">
-          <span class="badge b-done">CONCLUÍDO</span>
-          <span class="badge b-lab">LAB</span>
-        </div>
-      </div>
-      <div class="proj-name">NEXUS v2.0</div>
-      <div class="proj-role">OSINT Intelligence Platform</div>
-      <div class="proj-desc">Painel OSINT com 145+ dorks contextuais, entity risk scoring, integração HIBP API, fontes brasileiras e exportação de relatórios HTML para clientes.</div>
-      <div class="proj-tags">
-        <span class="ptag">Python</span><span class="ptag">HIBP API</span><span class="ptag">Dorks</span>
-        <span class="ptag">Risk Score</span><span class="ptag">BR Intel</span>
-      </div>
-      <div class="proj-footer">
-        <span>MITRE:</span>
-        <span class="mb cb">TA0043 Recon</span>
-        <span class="mb cb">TA0009 Collection</span>
-      </div>
-    </div>
-
-    <!-- ReAct Agent -->
-    <div class="proj cp">
-      <div class="proj-accent"></div>
-      <div class="proj-header">
-        <div class="proj-icon">🤖</div>
-        <div class="badges">
-          <span class="badge b-wip">EM DESENVOLVIMENTO</span>
-          <span class="badge b-ai">AI-POWERED</span>
-        </div>
-      </div>
-      <div class="proj-name">ReAct Pentest Agent</div>
-      <div class="proj-role">Agente autônomo de pentest · Claude API + MCP</div>
-      <div class="proj-desc">Agente de pentest autônomo com arquitetura ReAct loop usando LLM. MCP Server com ferramentas ofensivas integradas. Perfis por contexto: webapp, CMS, network, API.</div>
-      <div class="proj-tags">
-        <span class="ptag">Claude API</span><span class="ptag">MCP</span><span class="ptag">ReAct</span>
-        <span class="ptag">Python</span><span class="ptag">AI Agent</span>
-      </div>
-      <div class="proj-footer">
-        <span>TIPO:</span>
-        <span class="mb cp">AI-Assisted Pentest</span>
-        <span class="mb cp">Autonomous Recon</span>
-      </div>
-      <div class="wip-bar">
-        <div class="wip-label">progresso estimado: 50%</div>
-        <div class="wip-track"><div class="wip-fill" style="width:50%"></div></div>
-      </div>
-    </div>
-
-    <!-- GROW -->
-    <div class="proj cc">
-      <div class="proj-accent"></div>
-      <div class="proj-header">
-        <div class="proj-icon">🎙️</div>
-        <div class="badges">
-          <span class="badge b-wip">EM DESENVOLVIMENTO</span>
-          <span class="badge b-ai">AI-POWERED</span>
-        </div>
-      </div>
-      <div class="proj-name">GROW</div>
-      <div class="proj-role">Voice AI Agent · Windows HUD Overlay</div>
-      <div class="proj-desc">Assistente de voz com HUD overlay para Windows. Multi-IA orquestrado: Whisper STT, Piper TTS, Ollama (local), grounding visual via OCR. Foco em produtividade para cybersecurity.</div>
-      <div class="proj-tags">
-        <span class="ptag">Python</span><span class="ptag">Whisper</span><span class="ptag">Piper TTS</span>
-        <span class="ptag">Ollama</span><span class="ptag">OCR</span>
-      </div>
-      <div class="proj-footer">
-        <span>TIPO:</span>
-        <span class="mb cc">AI Agent</span>
-        <span class="mb cc">Security Tooling</span>
-      </div>
-      <div class="wip-bar">
-        <div class="wip-label">progresso estimado: 60%</div>
-        <div class="wip-track"><div class="wip-fill" style="width:60%"></div></div>
-      </div>
-    </div>
-
-    <!-- Malware Lab -->
-    <div class="proj ca">
-      <div class="proj-accent"></div>
-      <div class="proj-header">
-        <div class="proj-icon">🔬</div>
-        <div class="badges">
-          <span class="badge b-wip">EM DESENVOLVIMENTO</span>
-          <span class="badge b-private">PRIVADO</span>
-        </div>
-      </div>
-      <div class="proj-name">Malware Detonation Lab</div>
-      <div class="proj-role">Behavioral Analysis · Detection Engineering</div>
-      <div class="proj-desc">Lab de análise dinâmica via Zeek, Sysmon e process diffs. Pipeline para derivar regras Sigma e alertas Wazuh a partir de comportamento de malware real. TTPs mapeados ao MITRE ATT&amp;CK.</div>
-      <div class="proj-tags">
-        <span class="ptag">Zeek</span><span class="ptag">Sysmon</span><span class="ptag">Sigma</span>
-        <span class="ptag">Wazuh</span><span class="ptag">MITRE</span>
-      </div>
-      <div class="proj-footer">
-        <span>MITRE:</span>
-        <span class="mb ca">TA0011</span>
-        <span class="mb ca">M1049 Detection</span>
-      </div>
-      <div class="wip-bar">
-        <div class="wip-label">progresso estimado: 40%</div>
-        <div class="wip-track"><div class="wip-fill" style="width:40%"></div></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- AI -->
-  <div class="sec" style="margin-top:48px">
-    <span class="sec-num mono">02</span>
-    <span class="sec-label">// IA no dia a dia</span>
-    <div class="sec-line"></div>
-  </div>
-
-  <div class="ai-block">
+  <!-- AI BLOCK -->
+  <div style="margin-top:16px" class="ai-block">
     <div class="ai-header">
       <span style="font-size:22px">🧠</span>
       <div>
         <div class="ai-title">AI-Augmented Workflow</div>
-        <div class="ai-sub">uso diário de LLMs como multiplicador de produtividade</div>
+        <div class="ai-sub">LLMs integrados nas rotinas de trabalho e estudo diários</div>
       </div>
     </div>
-    <div class="ai-desc">Integro modelos de linguagem nas rotinas de trabalho e estudo: pesquisa técnica acelerada, apoio na escrita e revisão de scripts Python, análise de logs, geração de relatórios e aprendizado ativo em novas áreas. Familiaridade prática com APIs de LLMs e construção de agentes — não como substituto do raciocínio técnico, mas como camada que amplifica entrega.</div>
+    <div class="ai-desc">Uso modelos de linguagem como camada de amplificação — não como substituto do raciocínio técnico. Pesquisa acelerada, revisão de scripts, análise de outputs de ferramentas, geração de relatórios e aprendizado ativo em novas áreas de segurança. Tenho familiaridade prática com APIs, construção de agentes simples e protocolo MCP.</div>
     <div class="ai-pills">
       <span class="ai-pill">Claude (Anthropic)</span>
       <span class="ai-pill">ChatGPT / GPT-4o</span>
@@ -463,49 +367,107 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
     </div>
   </div>
 
-  <!-- SKILLS -->
-  <div id="skills" class="sec">
-    <span class="sec-num mono">03</span>
-    <span class="sec-label">// Stack técnico</span>
+  <!-- PROJETOS -->
+  <div id="projetos" class="sec">
+    <span class="sec-num">01</span>
+    <span class="sec-label">// Projetos de pesquisa &amp; labs</span>
     <div class="sec-line"></div>
   </div>
 
-  <div class="skills-grid">
-    <div class="sb sb-blue">
-      <div class="sb-title">Suporte &amp; Infra</div>
-      <div class="ski"><span class="ski-name">Acronis DR</span><div class="bar-w"><div class="bar-f" style="width:90%"></div></div></div>
-      <div class="ski"><span class="ski-name">Windows Server</span><div class="bar-w"><div class="bar-f" style="width:80%"></div></div></div>
-      <div class="ski"><span class="ski-name">Linux (Arch/Kali)</span><div class="bar-w"><div class="bar-f" style="width:82%"></div></div></div>
-      <div class="ski"><span class="ski-name">Redes / TCP-IP</span><div class="bar-w"><div class="bar-f" style="width:72%"></div></div></div>
-      <div class="ski-note">// experiência profissional real</div>
+  <div class="notice">
+    <em>ℹ</em>
+    Todos os projetos foram desenvolvidos em ambiente de laboratório controlado, fins educacionais e de pesquisa. Repositórios privados — disponíveis para revisão técnica mediante solicitação.
+  </div>
+
+  <div class="projects-grid">
+
+    <div class="proj cr">
+      <div class="proj-accent"></div>
+      <div class="proj-header">
+        <div class="proj-icon">🦠</div>
+        <div class="badges"><span class="badge b-done">CONCLUÍDO</span><span class="badge b-private">PRIVADO</span><span class="badge b-lab">LAB</span></div>
+      </div>
+      <div class="proj-name">GeminiRAT</div>
+      <div class="proj-role">Framework C2 · Malware Research · Python</div>
+      <div class="proj-desc">Framework de Comando &amp; Controle para emulação de adversários em lab isolado. Arquitetura cliente-servidor com coleta, persistência e exfiltração. Base para derivar regras Sigma/Wazuh e estudar detection engineering pelo lado do atacante.</div>
+      <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Sockets</span><span class="ptag">C2</span><span class="ptag">Sigma</span><span class="ptag">Wazuh</span></div>
+      <div class="proj-footer"><span>MITRE:</span><span class="mb cr">TA0011 C2</span><span class="mb cr">TA0010 Exfil</span><span class="mb cr">TA0003 Persist</span></div>
     </div>
-    <div class="sb sb-red">
-      <div class="sb-title">Segurança (labs)</div>
-      <div class="ski"><span class="ski-name">Pentest Web</span><div class="bar-w"><div class="bar-f" style="width:78%"></div></div></div>
-      <div class="ski"><span class="ski-name">MITRE ATT&amp;CK</span><div class="bar-w"><div class="bar-f" style="width:80%"></div></div></div>
-      <div class="ski"><span class="ski-name">Detection Eng</span><div class="bar-w"><div class="bar-f" style="width:70%"></div></div></div>
-      <div class="ski"><span class="ski-name">EDR/XDR (contato)</span><div class="bar-w"><div class="bar-f" style="width:60%"></div></div></div>
-      <div class="ski-note">// ambiente controlado / estudo</div>
+
+    <div class="proj cg">
+      <div class="proj-accent"></div>
+      <div class="proj-header">
+        <div class="proj-icon">🔍</div>
+        <div class="badges"><span class="badge b-wip">EM DESENVOLVIMENTO</span><span class="badge b-lab">LAB</span></div>
+      </div>
+      <div class="proj-name">ReconX v5</div>
+      <div class="proj-role">Pentest Orchestrator · Flask + SocketIO</div>
+      <div class="proj-desc">Orquestrador de toolchain ofensivo com UI em tempo real via SocketIO. Pipeline integrado com Nmap, Gobuster, Nikto, wafw00f, WhatWeb. Findings persistidos em SQLite por severidade, suporte a proxy.</div>
+      <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Flask</span><span class="ptag">SocketIO</span><span class="ptag">SQLite</span><span class="ptag">Nmap</span></div>
+      <div class="proj-footer"><span>MITRE:</span><span class="mb cg">TA0043 Recon</span><span class="mb cg">TA0007 Discovery</span></div>
+      <div class="wip-bar"><div class="wip-label">progresso estimado: 75%</div><div class="wip-track"><div class="wip-fill" style="width:75%"></div></div></div>
     </div>
-    <div class="sb sb-green">
-      <div class="sb-title">Desenvolvimento</div>
-      <div class="ski"><span class="ski-name">Python</span><div class="bar-w"><div class="bar-f" style="width:85%"></div></div></div>
-      <div class="ski"><span class="ski-name">Flask / SocketIO</span><div class="bar-w"><div class="bar-f" style="width:75%"></div></div></div>
-      <div class="ski"><span class="ski-name">Bash scripting</span><div class="bar-w"><div class="bar-f" style="width:68%"></div></div></div>
-      <div class="ski"><span class="ski-name">Next.js / React</span><div class="bar-w"><div class="bar-f" style="width:55%"></div></div></div>
+
+    <div class="proj cb">
+      <div class="proj-accent"></div>
+      <div class="proj-header">
+        <div class="proj-icon">🌐</div>
+        <div class="badges"><span class="badge b-done">CONCLUÍDO</span><span class="badge b-lab">LAB</span></div>
+      </div>
+      <div class="proj-name">NEXUS v2.0</div>
+      <div class="proj-role">OSINT Intelligence Platform</div>
+      <div class="proj-desc">Painel OSINT com 145+ dorks contextuais, entity risk scoring, integração HIBP API, fontes brasileiras e exportação de relatórios HTML. Usado em consultorias freelance para clientes pequenos.</div>
+      <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">HIBP API</span><span class="ptag">Dorks</span><span class="ptag">Risk Score</span><span class="ptag">BR Intel</span></div>
+      <div class="proj-footer"><span>MITRE:</span><span class="mb cb">TA0043 Recon</span><span class="mb cb">TA0009 Collection</span></div>
     </div>
-    <div class="sb sb-purple">
-      <div class="sb-title">IA &amp; Automação</div>
-      <div class="ski"><span class="ski-name">LLM APIs</span><div class="bar-w"><div class="bar-f" style="width:82%"></div></div></div>
-      <div class="ski"><span class="ski-name">Prompt Engineering</span><div class="bar-w"><div class="bar-f" style="width:80%"></div></div></div>
-      <div class="ski"><span class="ski-name">AI Agents</span><div class="bar-w"><div class="bar-f" style="width:72%"></div></div></div>
-      <div class="ski"><span class="ski-name">MCP Protocol</span><div class="bar-w"><div class="bar-f" style="width:65%"></div></div></div>
+
+    <div class="proj cp">
+      <div class="proj-accent"></div>
+      <div class="proj-header">
+        <div class="proj-icon">🤖</div>
+        <div class="badges"><span class="badge b-wip">EM DESENVOLVIMENTO</span><span class="badge b-ai">AI-POWERED</span></div>
+      </div>
+      <div class="proj-name">ReAct Pentest Agent</div>
+      <div class="proj-role">Agente autônomo · Claude API + MCP</div>
+      <div class="proj-desc">Agente de pentest autônomo com arquitetura ReAct loop usando LLM. MCP Server com ferramentas ofensivas. Perfis por contexto: webapp, CMS, network, API. Integração com GeminiRAT como execution layer.</div>
+      <div class="proj-tags"><span class="ptag">Claude API</span><span class="ptag">MCP</span><span class="ptag">ReAct</span><span class="ptag">Python</span><span class="ptag">AI Agent</span></div>
+      <div class="proj-footer"><span>TIPO:</span><span class="mb cp">AI-Assisted Pentest</span><span class="mb cp">Autonomous</span></div>
+      <div class="wip-bar"><div class="wip-label">progresso estimado: 50%</div><div class="wip-track"><div class="wip-fill" style="width:50%"></div></div></div>
     </div>
+
+    <div class="proj cc">
+      <div class="proj-accent"></div>
+      <div class="proj-header">
+        <div class="proj-icon">🎙️</div>
+        <div class="badges"><span class="badge b-wip">EM DESENVOLVIMENTO</span><span class="badge b-ai">AI-POWERED</span></div>
+      </div>
+      <div class="proj-name">GROW</div>
+      <div class="proj-role">Voice AI Agent · Windows HUD Overlay</div>
+      <div class="proj-desc">Assistente de voz com HUD overlay para Windows. Multi-IA orquestrado: Whisper STT, Piper TTS, Ollama local, grounding visual via OCR. Foco em produtividade para profissionais de segurança.</div>
+      <div class="proj-tags"><span class="ptag">Python</span><span class="ptag">Whisper</span><span class="ptag">Piper TTS</span><span class="ptag">Ollama</span><span class="ptag">OCR</span></div>
+      <div class="proj-footer"><span>TIPO:</span><span class="mb cc">AI Agent</span><span class="mb cc">Security Tooling</span></div>
+      <div class="wip-bar"><div class="wip-label">progresso estimado: 60%</div><div class="wip-track"><div class="wip-fill" style="width:60%"></div></div></div>
+    </div>
+
+    <div class="proj ca">
+      <div class="proj-accent"></div>
+      <div class="proj-header">
+        <div class="proj-icon">🔬</div>
+        <div class="badges"><span class="badge b-wip">EM DESENVOLVIMENTO</span><span class="badge b-private">PRIVADO</span></div>
+      </div>
+      <div class="proj-name">Malware Detonation Lab</div>
+      <div class="proj-role">Behavioral Analysis · Detection Engineering</div>
+      <div class="proj-desc">Lab de análise dinâmica via Zeek, Sysmon e process diffs. Pipeline para derivar regras Sigma e alertas Wazuh a partir de comportamento de malware. TTPs mapeados ao MITRE ATT&CK para engenharia de detecção.</div>
+      <div class="proj-tags"><span class="ptag">Zeek</span><span class="ptag">Sysmon</span><span class="ptag">Sigma</span><span class="ptag">Wazuh</span><span class="ptag">MITRE</span></div>
+      <div class="proj-footer"><span>MITRE:</span><span class="mb ca">TA0011</span><span class="mb ca">M1049 Detection</span></div>
+      <div class="wip-bar"><div class="wip-label">progresso estimado: 40%</div><div class="wip-track"><div class="wip-fill" style="width:40%"></div></div></div>
+    </div>
+
   </div>
 
   <!-- EXP -->
   <div id="exp" class="sec">
-    <span class="sec-num mono">04</span>
+    <span class="sec-num">04</span>
     <span class="sec-label">// Experiência profissional</span>
     <div class="sec-line"></div>
   </div>
@@ -538,7 +500,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
 
   <!-- CERTS -->
   <div id="certs" class="sec">
-    <span class="sec-num mono">05</span>
+    <span class="sec-num">05</span>
     <span class="sec-label">// Certificações &amp; formação</span>
     <div class="sec-line"></div>
   </div>
@@ -554,7 +516,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
 
   <!-- FOOTER -->
   <div class="footer">
-    <div class="footer-cmd mono"><em>❯</em> ./contact.sh --role "InfoSec Analyst JR" --status open-to-work<span class="cursor"></span></div>
+    <div class="footer-cmd"><em>❯</em> ./contact.sh --role "InfoSec JR" --open-to-work true<span class="cursor"></span></div>
     <div class="footer-links">
       <a class="flink" href="https://linkedin.com/in/scherer0" target="_blank">LinkedIn</a>
       <a class="flink" href="https://credly.com/users/andre.scherer" target="_blank">Credly</a>
@@ -563,5 +525,22 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,14,23,0.92);backdrop-fi
   </div>
 
 </div>
+</div>
+
+<script>
+(function(){
+  var lines = document.querySelectorAll('.bl');
+  var delays = [0,300,550,800,950,1100,1250,1400,1550,1900,2100,2300,2500,2700,2900,3100,3400,3700];
+  lines.forEach(function(el,i){
+    setTimeout(function(){ el.classList.add('show'); }, delays[i] || i*180);
+  });
+  setTimeout(function(){
+    var boot = document.getElementById('boot');
+    boot.classList.add('fade-out');
+    document.getElementById('main').classList.add('visible');
+    setTimeout(function(){ boot.style.display='none'; }, 700);
+  }, 4400);
+})();
+</script>
 </body>
 </html>
