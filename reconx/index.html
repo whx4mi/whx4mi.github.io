@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReconX v5 — Pentest Orchestrator | whx4mi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#090c14;--surface:#0d1120;--s2:#111829;--border:#1a2540;--b2:#1e2d4a;--red:#ff4757;--green:#00ff88;--blue:#4da6ff;--amber:#ffb347;--purple:#a855f7;--cyan:#00d4ff;--text:#e2e8f0;--muted:#4a5568;--m2:#8899a6;}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,71,87,.005) 2px,rgba(255,71,87,.005) 4px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,71,87,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,71,87,.01) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+.mono{font-family:'JetBrains Mono',monospace}
+nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 32px;display:flex;justify-content:space-between;align-items:center}
+.nav-back{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}.nav-back:hover{color:var(--red)}
+.nav-title{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+.nav-links{display:flex;gap:20px}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s}.nav-links a:hover{color:var(--red)}
+.wrap{max-width:860px;margin:0 auto;padding:48px 32px 100px;position:relative;z-index:1}
+.tbar{background:var(--surface);border:1px solid var(--border);border-radius:10px 10px 0 0;padding:10px 16px;display:flex;align-items:center;gap:8px}
+.dot{width:11px;height:11px;border-radius:50%}.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.ttl{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:11px;margin:0 auto}
+.hero{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:32px;margin-bottom:36px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+.hero-red::after{background:linear-gradient(180deg,var(--red),transparent)}
+.hero-green::after{background:linear-gradient(180deg,var(--green),transparent)}
+.hero-blue::after{background:linear-gradient(180deg,var(--blue),transparent)}
+.hero-purple::after{background:linear-gradient(180deg,var(--purple),transparent)}
+.pline{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:16px}
+.pline .r{color:var(--red)}.pline .g{color:var(--green)}.pline .b{color:var(--blue)}
+.proj-title{font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--text);margin-bottom:6px}
+.proj-sub{font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:16px;font-weight:500}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 12px;border-radius:4px}
+.b-done{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.2);color:var(--green)}
+.b-wip{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);color:#ff6b35}
+.b-lab{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.2);color:var(--red)}
+.b-prv{background:rgba(77,166,255,.1);border:1px solid rgba(77,166,255,.15);color:var(--blue)}
+.b-ai{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);color:var(--purple)}
+.proj-desc{font-size:13px;color:var(--m2);line-height:1.8;margin-bottom:20px}
+.proj-desc strong{color:var(--text);font-weight:500}
+.meta-row{display:flex;flex-wrap:wrap;gap:20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.meta-row em{font-style:normal}
+.sec{display:flex;align-items:center;gap:12px;margin:44px 0 18px}
+.sline{flex:1;height:1px;background:var(--border)}
+.slbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+.slbl-r{color:var(--red)}.slbl-g{color:var(--green)}.slbl-b{color:var(--blue)}.slbl-p{color:var(--purple)}.slbl-a{color:var(--amber)}
+.block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 22px;margin-bottom:12px}
+.block-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.code-block{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--m2);line-height:2;overflow-x:auto}
+.code-block .g{color:var(--green)}.code-block .r{color:var(--red)}.code-block .b{color:var(--blue)}.code-block .a{color:var(--amber)}.code-block .p{color:var(--purple)}.code-block .m{color:var(--muted)}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.feat{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:14px 16px}
+.feat-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;margin-bottom:6px}
+.feat-desc{font-size:12px;color:var(--m2);line-height:1.6}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pill{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--s2);border:1px solid var(--b2);color:var(--m2);padding:3px 9px;border-radius:3px}
+.mitre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mitre-card{background:var(--s2);border:1px solid rgba(255,71,87,.15);border-radius:6px;padding:12px 14px}
+.mitre-id{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px}
+.mitre-name{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);margin-bottom:6px}
+.mitre-desc{font-size:11px;color:var(--m2);line-height:1.5}
+.learn-list{list-style:none;padding:0}
+.learn-list li{font-size:12px;color:var(--m2);padding:6px 0 6px 16px;position:relative;line-height:1.6;border-bottom:1px solid var(--border)}
+.learn-list li:last-child{border-bottom:none}
+.learn-list li::before{content:'▸';position:absolute;left:0;color:var(--red);font-size:10px;top:8px}
+.learn-list li strong{color:var(--text);font-weight:500}
+.footer{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:48px}
+.footer-cmd{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.footer-cmd em{color:var(--red);font-style:normal}
+.fcur{display:inline-block;width:7px;height:13px;background:var(--red);margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.flink{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);text-decoration:none}.flink:hover{color:var(--cyan)}
+@media(max-width:640px){.wrap{padding:24px 16px 80px}nav{padding:10px 16px}.nav-links{gap:12px}.hero{padding:20px}}
+.wip-bar{margin-top:14px}
+.wip-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#ff6b35;margin-bottom:6px}
+.wip-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.wip-fill{height:100%;background:#ff6b35;border-radius:2px;width:75%}
+.pipeline-block{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:14px 16px;margin-bottom:8px}
+.pipeline-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px}
+.pipeline-tools{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--m2);line-height:1.8}
+.pipeline-tools .arrow{color:var(--muted)}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="../"><span>←</span> voltar ao portfólio</a>
+  <span class="nav-title" style="color:var(--green)">ReconX v5</span>
+  <div class="nav-links">
+    <a href="../geminirat/">GeminiRAT</a>
+    <a href="../nexus/">NEXUS</a>
+    <a href="../react-agent/">ReAct Agent</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<div class="tbar">
+  <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+  <span class="ttl">root@kali:~/tools/reconx$ cat README.md</span>
+</div>
+<div class="hero hero-green">
+  <div class="pline"><span class="g">❯</span> <span class="m">~/tools/reconx</span></div>
+  <div class="proj-title">ReconX <span style="color:var(--green)">v5</span></div>
+  <div class="proj-sub" style="color:var(--green)">Pentest Orchestrator · Flask + SocketIO · Pipeline Builder</div>
+  <div class="badges">
+    <span class="badge b-wip">EM DESENVOLVIMENTO</span>
+    <span class="badge b-lab">LABORATÓRIO</span>
+  </div>
+  <div class="proj-desc">
+    Plataforma web single-file que <strong>orquestra um toolchain ofensivo completo</strong> via interface em tempo real. Em vez de abrir terminais separados para cada ferramenta, o ReconX unifica recon, enumeração, análise de vulnerabilidades e brute-force em pipelines configuráveis — com output estruturado, proxy integrado e persistência de findings.
+    <br><br>
+    Construído para uso em CTFs e labs de pentest, com foco em <strong>velocidade de cobertura e organização de resultados</strong>.
+  </div>
+  <div class="meta-row">
+    <span><em style="color:var(--green)">linguagem</em> Python 3</span>
+    <span><em style="color:var(--green)">arquitetura</em> single-file Flask + SocketIO</span>
+    <span><em style="color:var(--green)">progresso</em> 75%</span>
+  </div>
+  <div class="wip-bar">
+    <div class="wip-label">progresso: 75%</div>
+    <div class="wip-track"><div class="wip-fill"></div></div>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-g">// Arquitetura</span><div class="sline"></div></div>
+
+<div class="block">
+  <div class="block-title">Stack e fluxo de dados</div>
+  <div class="code-block"><span class="m"># Fluxo de execução</span>
+
+<span class="b">BROWSER (UI)</span>
+  └── Pipeline Builder  → seleciona e ordena ferramentas
+  └── Live Terminal     → output em tempo real via SocketIO
+  └── Findings Panel    → resultados por severidade
+  └── Checklist Manual  → steps manuais do pentest
+  └── Checkpoint System → salva estado da sessão
+
+      <span class="m">↕ WebSocket (SocketIO)</span>
+
+<span class="g">FLASK SERVER</span>
+  └── Executa ferramentas CLI como subprocessos
+  └── Watchdog per-tool → timeout configurável (evita travamentos)
+  └── Proxy manager     → injeta proxy nas ferramentas que suportam
+  └── SQLite            → persiste findings com severidade
+
+<span class="a">TOOL LAYER</span>  (executadas como subprocessos)
+  └── Recon: nmap, subfinder, httpx, naabu, dnsx
+  └── Web: gobuster, nikto, whatweb, wafw00f, katana
+  └── Vuln: nuclei, sqlmap, dalfox, ffuf, arjun
+  └── Visual: gowitness (screenshots automáticos)
+  └── Crypto: testssl (auditoria TLS/SSL)</div>
+</div>
+
+<div class="sec"><span class="slbl slbl-g">// Pipelines pré-configurados</span><div class="sline"></div></div>
+
+<div class="pipeline-block">
+  <div class="pipeline-name">web_pentest</div>
+  <div class="pipeline-tools">nmap <span class="arrow">→</span> whatweb <span class="arrow">→</span> wafw00f <span class="arrow">→</span> gobuster <span class="arrow">→</span> nikto <span class="arrow">→</span> nuclei_dast <span class="arrow">→</span> sqlmap <span class="arrow">→</span> dalfox <span class="arrow">→</span> gowitness</div>
+</div>
+<div class="pipeline-block">
+  <div class="pipeline-name">subdomain_recon</div>
+  <div class="pipeline-tools">subfinder <span class="arrow">→</span> httpx <span class="arrow">→</span> naabu <span class="arrow">→</span> dnsx <span class="arrow">→</span> gobuster_vhost <span class="arrow">→</span> nuclei_takeover <span class="arrow">→</span> gowitness</div>
+</div>
+<div class="pipeline-block">
+  <div class="pipeline-name">ctf_box</div>
+  <div class="pipeline-tools">nmap_vuln <span class="arrow">→</span> gobuster <span class="arrow">→</span> nikto <span class="arrow">→</span> arjun <span class="arrow">→</span> ffuf <span class="arrow">→</span> nuclei_dast <span class="arrow">→</span> testssl</div>
+</div>
+<div class="pipeline-block">
+  <div class="pipeline-name">bug_bounty</div>
+  <div class="pipeline-tools">subfinder <span class="arrow">→</span> httpx <span class="arrow">→</span> katana <span class="arrow">→</span> arjun <span class="arrow">→</span> dalfox <span class="arrow">→</span> nuclei_dast <span class="arrow">→</span> sqlmap</div>
+</div>
+
+<div class="sec"><span class="slbl slbl-g">// Funcionalidades</span><div class="sline"></div></div>
+
+<div class="feat-grid">
+  <div class="feat">
+    <div class="feat-title" style="color:var(--green)">Proxy Profiles</div>
+    <div class="feat-desc">Integração nativa com Burp Suite, OWASP ZAP, Tor+Privoxy e proxy custom. Injeção automática nas ferramentas que suportam — sem configurar cada uma manualmente.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--green)">Per-tool Timeout</div>
+    <div class="feat-desc">Watchdog com threading.Timer mata processos que excedem o tempo limite. Evita que uma ferramenta lenta trave todo o pipeline. Padrão configurável por ferramenta.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--green)">Findings SQLite</div>
+    <div class="feat-desc">Resultados persistidos em banco local com classificação por severidade (Critical, High, Medium, Low). Sessão sobrevive a recarregamentos.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--green)">Screenshots automáticos</div>
+    <div class="feat-desc">gowitness captura screenshot de cada endpoint descoberto — aceleração visual da triagem de superfície de ataque.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--green)">Multi-port</div>
+    <div class="feat-desc">Detecção de todas as portas HTTP/HTTPS abertas e execução dos módulos web contra cada uma — sem perder serviços em portas não-padrão.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--green)">Pipeline Builder</div>
+    <div class="feat-desc">Seleção e ordenação customizada de ferramentas via UI. Pipelines pré-configurados para os cenários mais comuns (web, subdomain, CTF, bug bounty).</div>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-a">// MITRE ATT&amp;CK Coverage</span><div class="sline"></div></div>
+
+<div class="mitre-grid">
+  <div class="mitre-card">
+    <div class="mitre-id">TA0043</div>
+    <div class="mitre-name">Reconnaissance</div>
+    <div class="mitre-desc">Enumeração de subdomínios, discovery de endpoints, fingerprinting de tecnologias e mapeamento de superfície de ataque.</div>
+  </div>
+  <div class="mitre-card">
+    <div class="mitre-id">TA0007</div>
+    <div class="mitre-name">Discovery</div>
+    <div class="mitre-desc">Identificação de serviços, portas, virtual hosts, parâmetros ocultos e configurações de segurança.</div>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-b">// Stack técnico</span><div class="sline"></div></div>
+
+<div class="block">
+  <div class="pills">
+    <span class="pill">Python 3</span><span class="pill">Flask</span><span class="pill">SocketIO</span><span class="pill">SQLite</span>
+    <span class="pill">Nmap</span><span class="pill">Nuclei</span><span class="pill">Gobuster</span><span class="pill">Nikto</span>
+    <span class="pill">SQLMap</span><span class="pill">Dalfox</span><span class="pill">FFuf</span><span class="pill">Subfinder</span>
+    <span class="pill">HTTPx</span><span class="pill">Gowitness</span><span class="pill">Arjun</span><span class="pill">Testssl</span>
+    <span class="pill">Katana</span><span class="pill">WhatWeb</span><span class="pill">wafw00f</span>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-p">// O que aprendi</span><div class="sline"></div></div>
+
+<div class="block">
+  <ul class="learn-list">
+    <li><strong>Gerenciamento de subprocessos em Python</strong> — controle de processos com timeout, leitura de output em tempo real e tratamento de erros por ferramenta.</li>
+    <li><strong>WebSockets com SocketIO</strong> — streaming de output de terminal para o browser em tempo real sem polling.</li>
+    <li><strong>Compatibilidade entre ferramentas</strong> — cada ferramenta tem quirks de sintaxe, flags e comportamento. Abstrair isso em um layer unificado exigiu bastante iteração.</li>
+    <li><strong>Proxy como first-class feature</strong> — entender quais ferramentas suportam qual tipo de proxy (HTTP vs SOCKS5) e como injetar isso de forma transparente.</li>
+    <li><strong>Design de pipeline</strong> — a ordem das ferramentas importa. subfinder antes de httpx, httpx antes de nuclei — a sequência certa multiplica a efetividade.</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-cmd"><em>❯</em> cd ../nexus/ &amp;&amp; cat README.md<span class="fcur"></span></div>
+  <a class="flink" href="../nexus/">Próximo: NEXUS v2.0 →</a>
+</div>
+
+</div>
+</body>
+</html>

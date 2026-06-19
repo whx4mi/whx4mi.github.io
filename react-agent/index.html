@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReAct Pentest Agent — AI + MCP | whx4mi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#090c14;--surface:#0d1120;--s2:#111829;--border:#1a2540;--b2:#1e2d4a;--red:#ff4757;--green:#00ff88;--blue:#4da6ff;--amber:#ffb347;--purple:#a855f7;--cyan:#00d4ff;--text:#e2e8f0;--muted:#4a5568;--m2:#8899a6;}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,71,87,.005) 2px,rgba(255,71,87,.005) 4px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,71,87,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,71,87,.01) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+.mono{font-family:'JetBrains Mono',monospace}
+nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 32px;display:flex;justify-content:space-between;align-items:center}
+.nav-back{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}.nav-back:hover{color:var(--red)}
+.nav-title{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+.nav-links{display:flex;gap:20px}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s}.nav-links a:hover{color:var(--red)}
+.wrap{max-width:860px;margin:0 auto;padding:48px 32px 100px;position:relative;z-index:1}
+.tbar{background:var(--surface);border:1px solid var(--border);border-radius:10px 10px 0 0;padding:10px 16px;display:flex;align-items:center;gap:8px}
+.dot{width:11px;height:11px;border-radius:50%}.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.ttl{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:11px;margin:0 auto}
+.hero{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:32px;margin-bottom:36px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+.hero-red::after{background:linear-gradient(180deg,var(--red),transparent)}
+.hero-green::after{background:linear-gradient(180deg,var(--green),transparent)}
+.hero-blue::after{background:linear-gradient(180deg,var(--blue),transparent)}
+.hero-purple::after{background:linear-gradient(180deg,var(--purple),transparent)}
+.pline{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:16px}
+.pline .r{color:var(--red)}.pline .g{color:var(--green)}.pline .b{color:var(--blue)}
+.proj-title{font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--text);margin-bottom:6px}
+.proj-sub{font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:16px;font-weight:500}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 12px;border-radius:4px}
+.b-done{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.2);color:var(--green)}
+.b-wip{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);color:#ff6b35}
+.b-lab{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.2);color:var(--red)}
+.b-prv{background:rgba(77,166,255,.1);border:1px solid rgba(77,166,255,.15);color:var(--blue)}
+.b-ai{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);color:var(--purple)}
+.proj-desc{font-size:13px;color:var(--m2);line-height:1.8;margin-bottom:20px}
+.proj-desc strong{color:var(--text);font-weight:500}
+.meta-row{display:flex;flex-wrap:wrap;gap:20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.meta-row em{font-style:normal}
+.sec{display:flex;align-items:center;gap:12px;margin:44px 0 18px}
+.sline{flex:1;height:1px;background:var(--border)}
+.slbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+.slbl-r{color:var(--red)}.slbl-g{color:var(--green)}.slbl-b{color:var(--blue)}.slbl-p{color:var(--purple)}.slbl-a{color:var(--amber)}
+.block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 22px;margin-bottom:12px}
+.block-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.code-block{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--m2);line-height:2;overflow-x:auto}
+.code-block .g{color:var(--green)}.code-block .r{color:var(--red)}.code-block .b{color:var(--blue)}.code-block .a{color:var(--amber)}.code-block .p{color:var(--purple)}.code-block .m{color:var(--muted)}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.feat{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:14px 16px}
+.feat-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;margin-bottom:6px}
+.feat-desc{font-size:12px;color:var(--m2);line-height:1.6}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pill{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--s2);border:1px solid var(--b2);color:var(--m2);padding:3px 9px;border-radius:3px}
+.mitre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mitre-card{background:var(--s2);border:1px solid rgba(255,71,87,.15);border-radius:6px;padding:12px 14px}
+.mitre-id{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px}
+.mitre-name{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);margin-bottom:6px}
+.mitre-desc{font-size:11px;color:var(--m2);line-height:1.5}
+.learn-list{list-style:none;padding:0}
+.learn-list li{font-size:12px;color:var(--m2);padding:6px 0 6px 16px;position:relative;line-height:1.6;border-bottom:1px solid var(--border)}
+.learn-list li:last-child{border-bottom:none}
+.learn-list li::before{content:'▸';position:absolute;left:0;color:var(--red);font-size:10px;top:8px}
+.learn-list li strong{color:var(--text);font-weight:500}
+.footer{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:48px}
+.footer-cmd{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.footer-cmd em{color:var(--red);font-style:normal}
+.fcur{display:inline-block;width:7px;height:13px;background:var(--red);margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.flink{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);text-decoration:none}.flink:hover{color:var(--cyan)}
+@media(max-width:640px){.wrap{padding:24px 16px 80px}nav{padding:10px 16px}.nav-links{gap:12px}.hero{padding:20px}}
+.wip-bar{margin-top:14px}
+.wip-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:#ff6b35;margin-bottom:6px}
+.wip-track{height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.wip-fill{height:100%;background:#ff6b35;border-radius:2px;width:50%}
+.react-loop{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.loop-step{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:14px;text-align:center}
+.loop-step-icon{font-size:24px;margin-bottom:8px}
+.loop-step-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--purple);margin-bottom:6px}
+.loop-step-desc{font-size:11px;color:var(--m2);line-height:1.5}
+.loop-arrow{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:14px;margin:8px 0}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="../"><span>←</span> voltar ao portfólio</a>
+  <span class="nav-title" style="color:var(--purple)">ReAct Pentest Agent</span>
+  <div class="nav-links">
+    <a href="../geminirat/">GeminiRAT</a>
+    <a href="../reconx/">ReconX</a>
+    <a href="../nexus/">NEXUS</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<div class="tbar">
+  <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+  <span class="ttl">root@kali:~/agents/react-pentest$ cat README.md</span>
+</div>
+<div class="hero hero-purple">
+  <div class="pline"><span class="p" style="color:var(--purple)">❯</span> <span class="m">~/agents/react-pentest</span></div>
+  <div class="proj-title">ReAct Pentest <span style="color:var(--purple)">Agent</span></div>
+  <div class="proj-sub" style="color:var(--purple)">Agente Autônomo · Claude API + MCP · AI-Powered Pentest</div>
+  <div class="badges">
+    <span class="badge b-wip">EM DESENVOLVIMENTO</span>
+    <span class="badge b-ai">AI-POWERED</span>
+    <span class="badge b-lab">LABORATÓRIO</span>
+  </div>
+  <div class="proj-desc">
+    Agente de pentest autônomo que usa <strong>arquitetura ReAct (Reasoning + Acting)</strong> com LLM para conduzir reconhecimento e análise de vulnerabilidades de forma independente. O modelo raciocina sobre o estado atual do alvo, decide qual ferramenta executar, analisa o output e determina o próximo passo — sem intervenção manual a cada etapa.
+    <br><br>
+    O diferencial é a camada <strong>MCP (Model Context Protocol)</strong>: um servidor customizado que expõe o toolkit ofensivo como ferramentas nativas para o LLM, permitindo que o agente execute Nmap, Gobuster, Nikto e outros diretamente via chamadas estruturadas.
+  </div>
+  <div class="meta-row">
+    <span><em style="color:var(--purple)">LLM</em> Claude (Anthropic)</span>
+    <span><em style="color:var(--purple)">protocolo</em> MCP (Model Context Protocol)</span>
+    <span><em style="color:var(--purple)">progresso</em> 50%</span>
+  </div>
+  <div class="wip-bar">
+    <div class="wip-label">progresso: 50%</div>
+    <div class="wip-track"><div class="wip-fill"></div></div>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-p">// Como o ReAct loop funciona</span><div class="sline"></div></div>
+
+<div class="react-loop">
+  <div class="loop-step">
+    <div class="loop-step-icon">🧠</div>
+    <div class="loop-step-name">REASON</div>
+    <div class="loop-step-desc">LLM analisa o estado atual: o que já foi descoberto, quais vetores existem, qual é o próximo passo lógico.</div>
+  </div>
+  <div class="loop-step">
+    <div class="loop-step-icon">⚡</div>
+    <div class="loop-step-name">ACT</div>
+    <div class="loop-step-desc">Chama uma ferramenta via MCP com parâmetros decididos pelo raciocínio — Nmap em porta X, Gobuster em wordlist Y.</div>
+  </div>
+  <div class="loop-step">
+    <div class="loop-step-icon">👁️</div>
+    <div class="loop-step-name">OBSERVE</div>
+    <div class="loop-step-desc">Recebe o output da ferramenta, interpreta os resultados e alimenta o próximo ciclo de raciocínio.</div>
+  </div>
+</div>
+
+<div class="loop-arrow">↩ loop até conclusão ou limite de iterações</div>
+
+<div class="block">
+  <div class="block-title">Exemplo de ciclo ReAct em execução</div>
+  <div class="code-block"><span class="m">[Iter 1] REASON:</span> Alvo é 10.10.11.x. Início com port scan completo.
+<span class="m">[Iter 1] ACT:</span>    <span class="g">nmap_scan</span>(target="10.10.11.x", flags="-sV -T4 --top-ports 1000")
+<span class="m">[Iter 1] OBS:</span>    Portas abertas: 22/ssh, 80/http, 8080/http-alt
+
+<span class="m">[Iter 2] REASON:</span> HTTP em 80 e 8080. Verificar tecnologias e diretórios.
+<span class="m">[Iter 2] ACT:</span>    <span class="g">whatweb_scan</span>(target="http://10.10.11.x")
+<span class="m">[Iter 2] OBS:</span>    Apache 2.4.51, PHP 7.4, WordPress 5.8
+
+<span class="m">[Iter 3] REASON:</span> WordPress detectado. Enumerar plugins e usuários.
+<span class="m">[Iter 3] ACT:</span>    <span class="g">gobuster_scan</span>(target="http://10.10.11.x", wordlist="wp-plugins")
+<span class="m">[Iter 3] OBS:</span>    Plugin vulnerável: contact-form-7 v5.3.1
+
+<span class="a">[Finding] CVE detectado via versão de plugin → escalando para exploit phase</span></div>
+</div>
+
+<div class="sec"><span class="slbl slbl-p">// Arquitetura MCP</span><div class="sline"></div></div>
+
+<div class="block">
+  <div class="block-title">Ferramentas expostas via MCP Server</div>
+  <div class="code-block"><span class="m"># MCP Server — toolkit ofensivo como ferramentas nativas do LLM</span>
+
+<span class="p">tools disponíveis:</span>
+  <span class="g">nmap_scan</span>       → port scan com flags configuráveis
+  <span class="g">gobuster_scan</span>   → directory/file brute-force
+  <span class="g">nikto_scan</span>      → web vulnerability scan
+  <span class="g">whatweb_scan</span>    → tech fingerprinting
+  <span class="g">wafw00f_scan</span>    → WAF detection
+  <span class="g">sqlmap_test</span>     → SQL injection testing
+  <span class="g">nuclei_scan</span>     → template-based vulnerability detection
+  <span class="g">get_findings</span>    → recupera findings acumulados da sessão
+  <span class="g">add_finding</span>     → registra finding com severidade e evidência
+
+<span class="m"># Perfis de agente por tipo de alvo</span>
+  <span class="b">webapp</span>   → foco em OWASP Top 10, auth, input validation
+  <span class="b">cms</span>      → WordPress/Joomla/Drupal — plugins, temas, versões
+  <span class="b">network</span>  → port scan amplo, service enumeration, privesc paths
+  <span class="b">api</span>      → endpoint discovery, auth bypass, rate limiting</div>
+</div>
+
+<div class="sec"><span class="slbl slbl-p">// Integração com GeminiRAT</span><div class="sline"></div></div>
+
+<div class="block">
+  <div class="feat-desc" style="font-size:13px;line-height:1.8;color:var(--m2)">
+    O ReAct Agent tem um bridge planejado com o <strong style="color:var(--text)">GeminiRAT</strong> como execution layer — após comprometimento de um host, o agente pode interagir com o agente C2 via API HTTP para executar comandos remotamente, coletar informações de post-exploitation e continuar o raciocínio com dados do host comprometido.<br><br>
+    Essa integração fecha o ciclo: recon autônomo → exploração → execução no host → análise → próximo passo. <strong style="color:var(--purple)">Fase planejada para Q3/2026.</strong>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-b">// Stack técnico</span><div class="sline"></div></div>
+
+<div class="block">
+  <div class="pills">
+    <span class="pill">Python 3</span>
+    <span class="pill">Claude API (Anthropic)</span>
+    <span class="pill">MCP Protocol</span>
+    <span class="pill">ReAct Loop</span>
+    <span class="pill">Nmap</span>
+    <span class="pill">Gobuster</span>
+    <span class="pill">Nikto</span>
+    <span class="pill">Nuclei</span>
+    <span class="pill">SQLMap</span>
+    <span class="pill">WhatWeb</span>
+    <span class="pill">Asyncio</span>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-p">// Por que isso é relevante</span><div class="sline"></div></div>
+
+<div class="block">
+  <ul class="learn-list">
+    <li><strong>AI + Security é a fronteira atual</strong> — agentes autônomos de pentest são área de pesquisa ativa. Construir um do zero dá entendimento prático de onde a IA ajuda e onde falha.</li>
+    <li><strong>MCP como camada de integração</strong> — o protocolo MCP permite que qualquer LLM interaja com ferramentas externas de forma padronizada. Dominar isso abre possibilidades além de pentest.</li>
+    <li><strong>Limite do raciocínio autônomo</strong> — o agente comete erros que um pentester humano não cometeria. Entender esses limites é tão valioso quanto as capacidades.</li>
+    <li><strong>Prompt engineering para segurança</strong> — guiar um LLM para raciocinar sobre pentest exige prompts muito específicos sobre metodologia, priorização e o que constitui um finding válido.</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-cmd"><em>❯</em> cd ~/ &amp;&amp; ./portfolio.sh<span class="fcur"></span></div>
+  <a class="flink" href="../">← voltar ao portfólio</a>
+</div>
+
+</div>
+</body>
+</html>

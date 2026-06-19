@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GeminiRAT — C2 Framework Research | whx4mi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#090c14;--surface:#0d1120;--s2:#111829;--border:#1a2540;--b2:#1e2d4a;--red:#ff4757;--green:#00ff88;--blue:#4da6ff;--amber:#ffb347;--purple:#a855f7;--cyan:#00d4ff;--text:#e2e8f0;--muted:#4a5568;--m2:#8899a6;}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,71,87,.005) 2px,rgba(255,71,87,.005) 4px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,71,87,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,71,87,.01) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+.mono{font-family:'JetBrains Mono',monospace}
+nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 32px;display:flex;justify-content:space-between;align-items:center}
+.nav-back{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}.nav-back:hover{color:var(--red)}
+.nav-title{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+.nav-links{display:flex;gap:20px}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s}.nav-links a:hover{color:var(--red)}
+.wrap{max-width:860px;margin:0 auto;padding:48px 32px 100px;position:relative;z-index:1}
+.tbar{background:var(--surface);border:1px solid var(--border);border-radius:10px 10px 0 0;padding:10px 16px;display:flex;align-items:center;gap:8px}
+.dot{width:11px;height:11px;border-radius:50%}.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.ttl{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:11px;margin:0 auto}
+.hero{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:32px;margin-bottom:36px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+.hero-red::after{background:linear-gradient(180deg,var(--red),transparent)}
+.hero-green::after{background:linear-gradient(180deg,var(--green),transparent)}
+.hero-blue::after{background:linear-gradient(180deg,var(--blue),transparent)}
+.hero-purple::after{background:linear-gradient(180deg,var(--purple),transparent)}
+.pline{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:16px}
+.pline .r{color:var(--red)}.pline .g{color:var(--green)}.pline .b{color:var(--blue)}
+.proj-title{font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--text);margin-bottom:6px}
+.proj-sub{font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:16px;font-weight:500}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 12px;border-radius:4px}
+.b-done{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.2);color:var(--green)}
+.b-wip{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);color:#ff6b35}
+.b-lab{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.2);color:var(--red)}
+.b-prv{background:rgba(77,166,255,.1);border:1px solid rgba(77,166,255,.15);color:var(--blue)}
+.b-ai{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);color:var(--purple)}
+.proj-desc{font-size:13px;color:var(--m2);line-height:1.8;margin-bottom:20px}
+.proj-desc strong{color:var(--text);font-weight:500}
+.meta-row{display:flex;flex-wrap:wrap;gap:20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.meta-row em{font-style:normal}
+.sec{display:flex;align-items:center;gap:12px;margin:44px 0 18px}
+.sline{flex:1;height:1px;background:var(--border)}
+.slbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+.slbl-r{color:var(--red)}.slbl-g{color:var(--green)}.slbl-b{color:var(--blue)}.slbl-p{color:var(--purple)}.slbl-a{color:var(--amber)}
+.block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 22px;margin-bottom:12px}
+.block-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.code-block{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--m2);line-height:2;overflow-x:auto}
+.code-block .g{color:var(--green)}.code-block .r{color:var(--red)}.code-block .b{color:var(--blue)}.code-block .a{color:var(--amber)}.code-block .p{color:var(--purple)}.code-block .m{color:var(--muted)}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.feat{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:14px 16px}
+.feat-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;margin-bottom:6px}
+.feat-desc{font-size:12px;color:var(--m2);line-height:1.6}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pill{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--s2);border:1px solid var(--b2);color:var(--m2);padding:3px 9px;border-radius:3px}
+.mitre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mitre-card{background:var(--s2);border:1px solid rgba(255,71,87,.15);border-radius:6px;padding:12px 14px}
+.mitre-id{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px}
+.mitre-name{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);margin-bottom:6px}
+.mitre-desc{font-size:11px;color:var(--m2);line-height:1.5}
+.learn-list{list-style:none;padding:0}
+.learn-list li{font-size:12px;color:var(--m2);padding:6px 0 6px 16px;position:relative;line-height:1.6;border-bottom:1px solid var(--border)}
+.learn-list li:last-child{border-bottom:none}
+.learn-list li::before{content:'▸';position:absolute;left:0;color:var(--red);font-size:10px;top:8px}
+.learn-list li strong{color:var(--text);font-weight:500}
+.footer{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:48px}
+.footer-cmd{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.footer-cmd em{color:var(--red);font-style:normal}
+.fcur{display:inline-block;width:7px;height:13px;background:var(--red);margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.flink{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);text-decoration:none}.flink:hover{color:var(--cyan)}
+@media(max-width:640px){.wrap{padding:24px 16px 80px}nav{padding:10px 16px}.nav-links{gap:12px}.hero{padding:20px}}</style>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="../"><span>←</span> voltar ao portfólio</a>
+  <span class="nav-title" style="color:var(--red)">GeminiRAT</span>
+  <div class="nav-links">
+    <a href="../reconx/">ReconX</a>
+    <a href="../nexus/">NEXUS</a>
+    <a href="../react-agent/">ReAct Agent</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<div class="tbar">
+  <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+  <span class="ttl">root@kali:~/research/geminirat$ cat README.md</span>
+</div>
+<div class="hero hero-red">
+  <div class="pline"><span class="r">❯</span> <span class="m">~/research/geminirat</span></div>
+  <div class="proj-title">GeminiRAT</div>
+  <div class="proj-sub" style="color:var(--red)">C2 Framework · Malware Research · Detection Engineering</div>
+  <div class="badges">
+    <span class="badge b-done">CONCLUÍDO</span>
+    <span class="badge b-prv">PRIVADO</span>
+    <span class="badge b-lab">LABORATÓRIO</span>
+  </div>
+  <div class="proj-desc">
+    Framework de Comando &amp; Controle desenvolvido do zero em Python para <strong>emulação de adversários em ambiente de laboratório isolado</strong>. O objetivo principal não foi construir um RAT funcional, mas entender como malware real opera — e usar esse conhecimento para derivar regras de detecção eficazes.
+    <br><br>
+    O mesmo lab que rodou o GeminiRAT foi monitorado com <strong>Zeek + Sysmon + Wazuh</strong>, gerando os dados comportamentais que se tornaram Sigma rules e alertas — conectando perspectiva ofensiva e defensiva.
+  </div>
+  <div class="meta-row">
+    <span><em style="color:var(--red)">linguagem</em> Python 3</span>
+    <span><em style="color:var(--red)">ambiente</em> Kali Linux + Windows VM (VirtualBox)</span>
+    <span><em style="color:var(--red)">repo</em> privado (revisão sob solicitação)</span>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-r">// Arquitetura</span><div class="sline"></div></div>
+
+<div class="block">
+  <div class="block-title">Visão Geral do Sistema</div>
+  <div class="code-block"><span class="m"># Componentes principais</span>
+
+<span class="g">SERVER</span>  (C2 Controller)
+  └── Escuta conexões de agentes
+  └── Interface de comandos interativa
+  └── Gerenciamento de sessões ativas
+
+<span class="r">AGENT</span>   (Implant — roda na máquina alvo)
+  └── Comunicação via <span class="a">Sockets TCP</span>
+  └── Persistência no Registro do Windows
+  └── Coleta de informações do host
+  └── Exfiltração de dados em staging
+
+<span class="b">LAB MONITOR</span> (análise comportamental)
+  └── Zeek  → análise de tráfego de rede
+  └── Sysmon → eventos de processo/registro
+  └── Wazuh → correlação e alertas
+  └── Output → Sigma Rules</div>
+</div>
+
+<div class="sec"><span class="slbl slbl-r">// Funcionalidades implementadas</span><div class="sline"></div></div>
+
+<div class="feat-grid">
+  <div class="feat">
+    <div class="feat-title" style="color:var(--red)">Comunicação C2</div>
+    <div class="feat-desc">Canal de comunicação bidirecional via Sockets TCP. Agente mantém conexão persistente e aguarda instruções do servidor controlador.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--red)">Persistência</div>
+    <div class="feat-desc">Mecanismo de persistência via Registro do Windows (HKCU\Software\Microsoft\Windows\CurrentVersion\Run) para sobreviver a reinicializações.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--red)">Coleta de informações</div>
+    <div class="feat-desc">Enumeração do host: usuário, hostname, SO, processos em execução, interfaces de rede e informações do ambiente.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--red)">Exfiltração staged</div>
+    <div class="feat-desc">Transferência de arquivos em chunks (staging) para simular exfiltração real e gerar os artefatos de rede analisados pelo Zeek.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--amber)">Análise comportamental</div>
+    <div class="feat-desc">Lab monitorado com Zeek (tráfego) e Sysmon (eventos de sistema) durante execução — gerando dataset para derivar regras de detecção.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--amber)">Detection Engineering</div>
+    <div class="feat-desc">Sigma rules e alertas Wazuh derivados do comportamento real observado — fechando o ciclo red-to-blue com artefatos defensivos concretos.</div>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-a">// MITRE ATT&amp;CK Coverage</span><div class="sline"></div></div>
+
+<div class="mitre-grid">
+  <div class="mitre-card">
+    <div class="mitre-id">TA0042</div>
+    <div class="mitre-name">Resource Development</div>
+    <div class="mitre-desc">Desenvolvimento do implant e infraestrutura C2 para suporte à operação.</div>
+  </div>
+  <div class="mitre-card">
+    <div class="mitre-id">TA0003</div>
+    <div class="mitre-name">Persistence</div>
+    <div class="mitre-desc">T1547.001 — Registry Run Keys para execução automática na inicialização do sistema.</div>
+  </div>
+  <div class="mitre-card">
+    <div class="mitre-id">TA0007</div>
+    <div class="mitre-name">Discovery</div>
+    <div class="mitre-desc">Enumeração de usuário, hostname, processos e configuração de rede do host comprometido.</div>
+  </div>
+  <div class="mitre-card">
+    <div class="mitre-id">TA0009</div>
+    <div class="mitre-name">Collection</div>
+    <div class="mitre-desc">Coleta de arquivos e informações do sistema para posterior exfiltração.</div>
+  </div>
+  <div class="mitre-card">
+    <div class="mitre-id">TA0011</div>
+    <div class="mitre-name">Command &amp; Control</div>
+    <div class="mitre-desc">Canal C2 via Sockets TCP — simulando comunicação de implant com servidor controlador.</div>
+  </div>
+  <div class="mitre-card">
+    <div class="mitre-id">TA0010</div>
+    <div class="mitre-name">Exfiltration</div>
+    <div class="mitre-desc">Transferência staged de dados do host comprometido para o servidor C2.</div>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-b">// Stack técnico</span><div class="sline"></div></div>
+
+<div class="block">
+  <div class="pills">
+    <span class="pill">Python 3</span>
+    <span class="pill">Sockets TCP</span>
+    <span class="pill">Windows Registry</span>
+    <span class="pill">Zeek</span>
+    <span class="pill">Sysmon</span>
+    <span class="pill">Wazuh</span>
+    <span class="pill">Sigma Rules</span>
+    <span class="pill">VirtualBox</span>
+    <span class="pill">Kali Linux</span>
+    <span class="pill">Windows 10 VM</span>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-p">// O que aprendi</span><div class="sline"></div></div>
+
+<div class="block">
+  <ul class="learn-list">
+    <li><strong>Comunicação de rede de baixo nível</strong> — implementar Sockets do zero força entendimento real de como implants estabelecem e mantêm canais C2.</li>
+    <li><strong>Superfície de detecção do Windows</strong> — persistência via registro deixa rastros específicos e detectáveis. Aprendi quais chaves o Sysmon monitora e como gerar alertas a partir delas.</li>
+    <li><strong>Ciclo red-to-blue</strong> — a parte mais valiosa foi usar o próprio lab ofensivo para criar artefatos defensivos. Ver o tráfego do Zeek e os eventos do Sysmon enquanto o agente rodava deu clareza sobre o que os defensores veem.</li>
+    <li><strong>Sigma como linguagem de detecção</strong> — traduzir comportamento observado em regras Sigma estruturadas, mapeadas ao MITRE ATT&CK, com lógica de correlação de eventos.</li>
+    <li><strong>Isolamento de lab é inegociável</strong> — todo desenvolvimento foi feito em rede isolada (host-only adapter no VirtualBox), sem risco de contaminação de ambiente externo.</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-cmd"><em>❯</em> cd ../reconx/ &amp;&amp; cat README.md<span class="fcur"></span></div>
+  <a class="flink" href="../reconx/">Próximo: ReconX v5 →</a>
+</div>
+
+</div>
+</body>
+</html>

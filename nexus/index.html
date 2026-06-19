@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS v2.0 — OSINT Platform | whx4mi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#090c14;--surface:#0d1120;--s2:#111829;--border:#1a2540;--b2:#1e2d4a;--red:#ff4757;--green:#00ff88;--blue:#4da6ff;--amber:#ffb347;--purple:#a855f7;--cyan:#00d4ff;--text:#e2e8f0;--muted:#4a5568;--m2:#8899a6;}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,71,87,.005) 2px,rgba(255,71,87,.005) 4px);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,71,87,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,71,87,.01) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+.mono{font-family:'JetBrains Mono',monospace}
+nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:12px 32px;display:flex;justify-content:space-between;align-items:center}
+.nav-back{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}.nav-back:hover{color:var(--red)}
+.nav-title{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
+.nav-links{display:flex;gap:20px}
+.nav-links a{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-decoration:none;transition:color .2s}.nav-links a:hover{color:var(--red)}
+.wrap{max-width:860px;margin:0 auto;padding:48px 32px 100px;position:relative;z-index:1}
+.tbar{background:var(--surface);border:1px solid var(--border);border-radius:10px 10px 0 0;padding:10px 16px;display:flex;align-items:center;gap:8px}
+.dot{width:11px;height:11px;border-radius:50%}.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.ttl{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:11px;margin:0 auto}
+.hero{background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;padding:32px;margin-bottom:36px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:0;left:0;width:3px;height:100%}
+.hero-red::after{background:linear-gradient(180deg,var(--red),transparent)}
+.hero-green::after{background:linear-gradient(180deg,var(--green),transparent)}
+.hero-blue::after{background:linear-gradient(180deg,var(--blue),transparent)}
+.hero-purple::after{background:linear-gradient(180deg,var(--purple),transparent)}
+.pline{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:16px}
+.pline .r{color:var(--red)}.pline .g{color:var(--green)}.pline .b{color:var(--blue)}
+.proj-title{font-family:'JetBrains Mono',monospace;font-size:clamp(22px,4vw,36px);font-weight:700;color:var(--text);margin-bottom:6px}
+.proj-sub{font-family:'JetBrains Mono',monospace;font-size:13px;margin-bottom:16px;font-weight:500}
+.badges{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 12px;border-radius:4px}
+.b-done{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.2);color:var(--green)}
+.b-wip{background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.2);color:#ff6b35}
+.b-lab{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.2);color:var(--red)}
+.b-prv{background:rgba(77,166,255,.1);border:1px solid rgba(77,166,255,.15);color:var(--blue)}
+.b-ai{background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);color:var(--purple)}
+.proj-desc{font-size:13px;color:var(--m2);line-height:1.8;margin-bottom:20px}
+.proj-desc strong{color:var(--text);font-weight:500}
+.meta-row{display:flex;flex-wrap:wrap;gap:20px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.meta-row em{font-style:normal}
+.sec{display:flex;align-items:center;gap:12px;margin:44px 0 18px}
+.sline{flex:1;height:1px;background:var(--border)}
+.slbl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;white-space:nowrap}
+.slbl-r{color:var(--red)}.slbl-g{color:var(--green)}.slbl-b{color:var(--blue)}.slbl-p{color:var(--purple)}.slbl-a{color:var(--amber)}
+.block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 22px;margin-bottom:12px}
+.block-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--amber);margin-bottom:12px}
+.code-block{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--m2);line-height:2;overflow-x:auto}
+.code-block .g{color:var(--green)}.code-block .r{color:var(--red)}.code-block .b{color:var(--blue)}.code-block .a{color:var(--amber)}.code-block .p{color:var(--purple)}.code-block .m{color:var(--muted)}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.feat{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:14px 16px}
+.feat-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;margin-bottom:6px}
+.feat-desc{font-size:12px;color:var(--m2);line-height:1.6}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pill{font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--s2);border:1px solid var(--b2);color:var(--m2);padding:3px 9px;border-radius:3px}
+.mitre-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.mitre-card{background:var(--s2);border:1px solid rgba(255,71,87,.15);border-radius:6px;padding:12px 14px}
+.mitre-id{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px}
+.mitre-name{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);margin-bottom:6px}
+.mitre-desc{font-size:11px;color:var(--m2);line-height:1.5}
+.learn-list{list-style:none;padding:0}
+.learn-list li{font-size:12px;color:var(--m2);padding:6px 0 6px 16px;position:relative;line-height:1.6;border-bottom:1px solid var(--border)}
+.learn-list li:last-child{border-bottom:none}
+.learn-list li::before{content:'▸';position:absolute;left:0;color:var(--red);font-size:10px;top:8px}
+.learn-list li strong{color:var(--text);font-weight:500}
+.footer{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-top:48px}
+.footer-cmd{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.footer-cmd em{color:var(--red);font-style:normal}
+.fcur{display:inline-block;width:7px;height:13px;background:var(--red);margin-left:2px;vertical-align:-2px;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.flink{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--blue);text-decoration:none}.flink:hover{color:var(--cyan)}
+@media(max-width:640px){.wrap{padding:24px 16px 80px}nav{padding:10px 16px}.nav-links{gap:12px}.hero{padding:20px}}
+.dork-example{background:var(--s2);border:1px solid var(--b2);border-radius:6px;padding:14px 16px;margin-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--m2);line-height:1.9}
+.dork-example .cat{color:var(--blue);font-weight:700}
+.dork-example .dork{color:var(--green)}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-back" href="../"><span>←</span> voltar ao portfólio</a>
+  <span class="nav-title" style="color:var(--blue)">NEXUS v2.0</span>
+  <div class="nav-links">
+    <a href="../geminirat/">GeminiRAT</a>
+    <a href="../reconx/">ReconX</a>
+    <a href="../react-agent/">ReAct Agent</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<div class="tbar">
+  <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+  <span class="ttl">root@kali:~/tools/nexus$ cat README.md</span>
+</div>
+<div class="hero hero-blue">
+  <div class="pline"><span class="b">❯</span> <span class="m">~/tools/nexus</span></div>
+  <div class="proj-title">NEXUS <span style="color:var(--blue)">v2.0</span></div>
+  <div class="proj-sub" style="color:var(--blue)">OSINT Intelligence Platform · Recon Passivo · BR Intel</div>
+  <div class="badges">
+    <span class="badge b-done">CONCLUÍDO</span>
+    <span class="badge b-lab">LABORATÓRIO</span>
+  </div>
+  <div class="proj-desc">
+    Plataforma OSINT single-file que centraliza reconhecimento passivo de alvos em uma interface unificada. Em vez de executar dorks manualmente no Google e consultar APIs separadas, o NEXUS <strong>gera automaticamente dorks contextuais por tipo de entidade</strong> (domínio, empresa, pessoa, IP) e agrega fontes de inteligência — incluindo fontes brasileiras específicas.
+    <br><br>
+    Usado em consultorias freelance para <strong>fase de reconhecimento passivo</strong> antes de qualquer interação com o alvo, com exportação de relatório HTML para entrega ao cliente.
+  </div>
+  <div class="meta-row">
+    <span><em style="color:var(--blue)">linguagem</em> Python 3</span>
+    <span><em style="color:var(--blue)">arquitetura</em> single-file</span>
+    <span><em style="color:var(--blue)">uso real</em> consultorias freelance</span>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-b">// Módulos principais</span><div class="sline"></div></div>
+
+<div class="feat-grid">
+  <div class="feat">
+    <div class="feat-title" style="color:var(--blue)">Gerador de Dorks (145+)</div>
+    <div class="feat-desc">Geração contextual de Google Dorks baseada no tipo de entidade alvo. Cada categoria de dork tem lógica própria — não é lista estática, é template engine contextual.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--blue)">Entity Risk Scoring</div>
+    <div class="feat-desc">Cálculo automático de score de risco do alvo baseado em presença de dados expostos, breaches encontrados e footprint digital. Output quantitativo para priorização.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--blue)">HIBP Integration</div>
+    <div class="feat-desc">Consulta à API Have I Been Pwned para verificação de emails e domínios em breaches conhecidos. Retorna lista de vazamentos com data e dados comprometidos.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--blue)">BR-INTEL Tab</div>
+    <div class="feat-desc">Módulo específico para fontes de inteligência brasileiras — consulta de CPF/CNPJ em fontes abertas, registros de domínio .br e bases de dados públicas brasileiras.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--blue)">HTML Report Export</div>
+    <div class="feat-desc">Geração de relatório HTML formatado com todos os findings, score de risco e dorks organizados por categoria — pronto para entrega em consultorias.</div>
+  </div>
+  <div class="feat">
+    <div class="feat-title" style="color:var(--blue)">Multi-entity Support</div>
+    <div class="feat-desc">Suporte a diferentes tipos de alvo: domínio, empresa, pessoa física, endereço IP. Cada tipo gera dorks e consultas específicas ao contexto.</div>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-b">// Exemplos de dorks por categoria</span><div class="sline"></div></div>
+
+<div class="dork-example">
+<span class="cat">[ Infrastructure ]</span>
+<span class="dork">site:alvo.com.br filetype:env OR filetype:config OR filetype:bak</span>
+<span class="dork">site:alvo.com.br inurl:admin OR inurl:dashboard OR inurl:wp-admin</span>
+<span class="dork">intext:"alvo.com.br" filetype:sql</span>
+
+<span class="cat">[ Exposure ]</span>
+<span class="dork">site:pastebin.com "alvo.com.br" password OR token OR key</span>
+<span class="dork">site:github.com "alvo.com.br" password OR secret OR api_key</span>
+
+<span class="cat">[ Documents ]</span>
+<span class="dork">site:alvo.com.br filetype:pdf OR filetype:xlsx OR filetype:docx</span>
+
+<span class="cat">[ BR-Specific ]</span>
+<span class="dork">site:registro.br "alvo.com.br"</span>
+<span class="dork">"CNPJ" "alvo" site:receita.fazenda.gov.br</span>
+</div>
+
+<div class="sec"><span class="slbl slbl-a">// MITRE ATT&amp;CK Coverage</span><div class="sline"></div></div>
+
+<div class="mitre-grid">
+  <div class="mitre-card">
+    <div class="mitre-id">TA0043</div>
+    <div class="mitre-name">Reconnaissance</div>
+    <div class="mitre-desc">Reconhecimento passivo via dorks, WHOIS/ASN, análise de footprint digital e mapeamento de exposição online.</div>
+  </div>
+  <div class="mitre-card">
+    <div class="mitre-id">TA0009</div>
+    <div class="mitre-name">Collection</div>
+    <div class="mitre-desc">Coleta de dados públicos expostos — breaches, credenciais, documentos e informações organizacionais em fontes abertas.</div>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-b">// Stack técnico</span><div class="sline"></div></div>
+
+<div class="block">
+  <div class="pills">
+    <span class="pill">Python 3</span>
+    <span class="pill">HIBP API</span>
+    <span class="pill">Requests</span>
+    <span class="pill">Jinja2 (reports)</span>
+    <span class="pill">Google Dorks</span>
+    <span class="pill">WHOIS</span>
+    <span class="pill">ASN Lookup</span>
+    <span class="pill">Shodan (opcional)</span>
+    <span class="pill">Registro.br</span>
+    <span class="pill">Receita Federal API</span>
+  </div>
+</div>
+
+<div class="sec"><span class="slbl slbl-p">// O que aprendi</span><div class="sline"></div></div>
+
+<div class="block">
+  <ul class="learn-list">
+    <li><strong>OSINT como metodologia</strong> — recon passivo tem etapas definidas: footprint → exposure → breach intel → scoring. Colocar isso em código força clareza sobre o processo.</li>
+    <li><strong>APIs de inteligência</strong> — integração com HIBP exigiu entender rate limiting, autenticação e parsing de respostas estruturadas. Base para integrar outras APIs de threat intel.</li>
+    <li><strong>Contexto brasileiro específico</strong> — Brasil tem fontes de dados abertas únicas (Receita Federal, Registro.br, DOU) que ferramentas internacionais ignoram. Explorar isso é diferencial em consultorias locais.</li>
+    <li><strong>Risk scoring</strong> — traduzir dados qualitativos (tem breach? tem admin exposto? tem credenciais no GitHub?) em score quantitativo exigiu pensar em pesos e normalização.</li>
+    <li><strong>Relatório como entregável</strong> — gerar HTML bem formatado para cliente não técnico é diferente de output de terminal. Aprendi a separar coleta de dados de apresentação.</li>
+  </ul>
+</div>
+
+<div class="footer">
+  <div class="footer-cmd"><em>❯</em> cd ../react-agent/ &amp;&amp; cat README.md<span class="fcur"></span></div>
+  <a class="flink" href="../react-agent/">Próximo: ReAct Agent →</a>
+</div>
+
+</div>
+</body>
+</html>

@@ -146,6 +146,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
 .c-r .mb{background:rgba(255,71,87,.1);color:var(--red)}.c-g .mb{background:rgba(0,255,136,.1);color:var(--green)}.c-b .mb{background:rgba(77,166,255,.1);color:var(--blue)}.c-p .mb{background:rgba(168,85,247,.1);color:var(--purple)}
 .wipbar{margin-top:10px;border-top:1px solid var(--border);padding-top:10px}
 .wl{font-family:'JetBrains Mono',monospace;font-size:9px;color:#ff6b35;margin-bottom:5px}
+.pj[onclick]::after{content:'→ ver projeto';position:absolute;bottom:12px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:0;transition:opacity .2s}
+.pj[onclick]:hover::after{opacity:1}
 .wt{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
 .wf{height:100%;background:#ff6b35;border-radius:2px}
 
@@ -465,7 +467,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
 
 <div class="pjgrid">
 
-  <div class="pj feat c-r">
+  <div class="pj feat c-r" onclick="location.href='geminirat/'" style="cursor:pointer">
     <div class="pjh">
       <div class="pji">🦠</div>
       <div class="pjbadges"><span class="pb pb-done">CONCLUÍDO</span><span class="pb pb-prv">PRIVADO</span><span class="pb pb-lab">LAB</span></div>
@@ -479,7 +481,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
     <div class="pjf"><span>MITRE:</span><span class="mb">TA0011 C2</span><span class="mb">TA0010 Exfil</span><span class="mb">TA0003 Persist</span><span class="mb">TA0007 Discovery</span></div>
   </div>
 
-  <div class="pj feat c-g">
+  <div class="pj feat c-g" onclick="location.href='reconx/'" style="cursor:pointer">
     <div class="pjh">
       <div class="pji">🔍</div>
       <div class="pjbadges"><span class="pb pb-wip">EM DESENVOLVIMENTO</span><span class="pb pb-lab">LAB</span></div>
@@ -494,7 +496,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
     <div class="wipbar"><div class="wl">progresso: 75%</div><div class="wt"><div class="wf" style="width:75%"></div></div></div>
   </div>
 
-  <div class="pj feat c-b">
+  <div class="pj feat c-b" onclick="location.href='nexus/'" style="cursor:pointer">
     <div class="pjh">
       <div class="pji">🌐</div>
       <div class="pjbadges"><span class="pb pb-done">CONCLUÍDO</span><span class="pb pb-lab">LAB</span></div>
@@ -508,7 +510,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(9,12,20,.97);backdrop-filt
     <div class="pjf"><span>MITRE:</span><span class="mb">TA0043 Recon</span><span class="mb">TA0009 Collection</span></div>
   </div>
 
-  <div class="pj secondary c-p">
+  <div class="pj secondary c-p" onclick="location.href='react-agent/'" style="cursor:pointer">
     <div class="pjh">
       <div class="pji">🤖</div>
       <div class="pjbadges"><span class="pb pb-wip">EM DESENVOLVIMENTO</span><span class="pb pb-ai">AI-POWERED</span></div>
